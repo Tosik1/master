@@ -4,8 +4,11 @@ public class Camera
 {
     public static Car getNextCar()
     {
+        //Переменная текст
         String randomNumber = Double.toString(Math.random()).substring(2, 5);
+        //Переменная целочисленная
         int randomHeight = (int) (1000 + 3500. * Math.random());
+        //Переменная с плавающей точкой
         double randomWeight = 600 + 10000 * Math.random();
 
         Car car = new Car();
