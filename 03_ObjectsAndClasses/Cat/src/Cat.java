@@ -1,8 +1,3 @@
-import org.w3c.dom.ls.LSOutput;
-
-import java.sql.SQLOutput;
-import java.util.Scanner;
-
 public class Cat
 {
 
@@ -12,9 +7,6 @@ public class Cat
     private double originWeight;
     private double weight;
 
-    private double minWeight;
-    private double maxWeight;
-
     private double food = 0.0;
 
     public static int count = 0;
@@ -23,20 +15,15 @@ public class Cat
     public static final double MAX_WEIGHT = 9000.0;
     public static final int EYES = 2;
 
-    private String color;
 
-    public void setCopy()
-    {
-        weight = weight;
-        color = getColor();
-    }
+    public ColorCat color;
+
+
 
     public Cat()
     {
         weight = 1500.0 + 3000.0 * Math.random();
         originWeight = weight;
-        minWeight = 1000.0;
-        maxWeight = 9000.0;
         count++;
     }
 
@@ -46,19 +33,17 @@ public class Cat
         this.weight = getWeight;
     }
 
-    public Cat(double weight, String color)
-    {
-        this();
-        this.weight = weight;
-        this.color = color;
+    public Cat(Cat other) {
+        this.color = other.color;
+        this.weight = other.weight;
     }
 
-    public void setColor(String color)
+    public void setColorCat(ColorCat type)
     {
-        this.color = color;
+        this.color = type;
     }
 
-    public String getColor()
+    public ColorCat getColor()
     {
         return color;
     }
@@ -78,7 +63,7 @@ public class Cat
         }
         else
         weight = weight - 1;
-        if (weight < minWeight) count--;
+        if (weight < MIN_WEIGHT) count--;
     }
 
     public void feed(Double amount)
@@ -91,7 +76,7 @@ public class Cat
         else
         weight = weight + amount;
         food = food + amount;
-        if (weight > maxWeight) count--;
+        if (weight > MAX_WEIGHT) count--;
     }
 
     public void drink(Double amount)
@@ -102,7 +87,7 @@ public class Cat
             return;
         }
         weight = weight + amount;
-        if (weight > maxWeight) count--;
+        if (weight > MAX_WEIGHT) count--;
     }
 
     public void setWeight(double weight) {
@@ -116,10 +101,10 @@ public class Cat
 
     public String getStatus()
     {
-        if(weight < minWeight) {
+        if(weight < MIN_WEIGHT) {
             return "Dead";
         }
-        else if(weight > maxWeight) {
+        else if(weight > MAX_WEIGHT) {
             return "Exploded";
         }
         else if(weight > originWeight) {
@@ -144,7 +129,7 @@ public class Cat
         else
         weight = weight - 2;
         System.out.println("cat do pee");
-        if (weight < minWeight) count--;
+        if (weight < MIN_WEIGHT) count--;
     }
 
     public static int getCount()

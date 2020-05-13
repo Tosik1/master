@@ -64,11 +64,10 @@ public class Loader
         System.out.println("weight kitten: " + getKitten().getWeight());
         System.out.println();
 
-        Cat cat7 = new Cat(4000.0, "black");
-        Cat cat8 = new Cat(2000.0, "red");
-        cat8.setWeight(cat7.getWeight());
-        cat8.setColor(cat7.getColor());
-        System.out.println("cat8 weight: " + cat8.getWeight() + " color: " + cat8.getColor());
+        Cat cat7 = new Cat(4000.0);
+        cat7.setColorCat(ColorCat.BLUE);
+        Cat cat8 = new Cat(cat7);
+        System.out.println("cat9 weight: " + cat8.getWeight() + " color: " + cat8.getColor());
     }
 
     private static Cat getKitten()
@@ -76,4 +75,6 @@ public class Loader
         Cat kitten = new Cat(1100.0);
         return kitten;
     }
+
+
 }

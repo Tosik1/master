@@ -2,24 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c231ce39-21c2-4bee-9a12-9fac9e2dfe2c" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/../Cat/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Cat/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Cat/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Cat/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Cat/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Cat/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Cat/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Cat/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Cat/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Cat/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Cat/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Cat/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Cat/Cat.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Cat/Cat.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Cat/src/Cat.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Cat/src/Cat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Cat/src/Loader.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Cat/src/Loader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RoadController.iml" beforeDir="false" afterPath="$PROJECT_DIR$/RoadController.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RoadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RoadController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Camera.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Car.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -51,7 +33,7 @@
     <property name="FullScreen" value="false" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549966201469" />
     <property name="dynamic.classpath" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -182,6 +164,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="440" y="94" key="#Project_Structure/0.0.1920.1040@0.0.1920.1040" timestamp="1588875435897" />
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1589321951491">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1589321951491" />
     <state x="461" y="165" key="SettingsEditor" timestamp="1588875493277">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

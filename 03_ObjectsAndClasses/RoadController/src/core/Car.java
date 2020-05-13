@@ -71,4 +71,6 @@ public class Car
             special + "Автомобиль с номером " + number +
             ":\n\tВысота: " + height + " мм\n\tМасса: " + weight + " кг";
     }
+
+    Cat cat;
 }

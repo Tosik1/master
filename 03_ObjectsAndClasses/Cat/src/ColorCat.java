@@ -1,9 +1,10 @@
-public enum ColorCat
-{
-    BLACK,
-    CHOCOLATE,
-    BLUE,
-    CREAM,
-    AMBER
+public enum ColorCat {
+
+        BLACK,
+        CHOCOLATE,
+        BLUE,
+        CREAM,
+        AMBER;
+
 
 }
