@@ -13,11 +13,13 @@ public class Loader
             System.out.print("Введите email: ");
             String n = in.nextLine();
 
+            String[] mas = n.split(" ");
 
-            if (n.indexOf('A') == 0) {
+
+            if (mas[0].equals("ADD")) {
                 if (n.indexOf('@') != -1){
                     if (n.indexOf('.') > n.indexOf('@') + 1){
-                        emails.add(n.substring(4));
+                        emails.add(mas[1]);
                     }
                     else
                         System.out.println("Пропущен символ \".\" после символа \"@\", попробуйте еще раз.");
@@ -27,7 +29,7 @@ public class Loader
             }
 
 
-            if (n.indexOf('L') == 0) {
+            if (mas[0].equals("LIST")) {
                 for (String email : emails) {
                     System.out.println(email);
                 }
