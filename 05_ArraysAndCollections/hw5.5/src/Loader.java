@@ -4,21 +4,25 @@ public class Loader
 {
     public static void main(String agrs[]) {
 
-                String[] symbol1 =        {"E", "T", "Y", "O", "P", "A", "H", "K", "X", "C", "B", "M"};
-                String[] symbol2 =        {"E", "T", "Y", "O", "P", "A", "H", "K", "X", "C", "B", "M"};
-                String[] symbol3 =        {"E", "T", "Y", "O", "P", "A", "H", "K", "X", "C", "B", "M"};
+                String[] symbol1 = {"E", "T", "Y", "O", "P", "A", "H", "K", "X", "C", "B", "M"};
 
         ArrayList<String> list = new ArrayList<>();
         ArrayList<String> list1 = new ArrayList<>();
         HashSet<String> set = new HashSet<>();
         TreeSet<String> tree = new TreeSet<>();
 
-        for (int i = 0; i < 12; i++){
-            for (int n = 0; n < 1000; n++){
-                    for (int r = 1; r < 200; r++) {
-                            if (r < 10)
-                                list.add(symbol1[i] + "" + n + "" + symbol1[i] + "" + symbol1[i] + "0" + r);
-                            else list.add(symbol1[i] + "" + n + "" + symbol1[i] + "" + symbol1[i] + "" + r);
+
+        for (int i = 0; i < 12; i++) {
+                    for (int n = 0; n < 10; n++) {
+                        for (int i2 = 0; i < 12; i++) {
+                            for (int i3 = 0; i < 12; i++) {
+                                for (int r = 1; r < 200; r++) {
+                                    StringBuilder builder = new StringBuilder();
+                                    if (r < 10)
+                                        list.add(builder.append(symbol1[i]).append(n).append(n).append(n).append(symbol1[i2]).append(symbol1[i3]).append("0").append(r).toString());
+                                    else list.add(builder.append(symbol1[i]).append(n).append(n).append(n).append(symbol1[i2]).append(symbol1[i3]).append(r).toString());
+                        }
+                    }
                 }
             }
         }
