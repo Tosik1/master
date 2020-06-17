@@ -1,13 +1,16 @@
 package orderAccount;
 
-public class bankAccount {
-    double balance = 0.0;
+public class BankAccount {
+    protected double balance = 0.0;
     public double withdrawMoney(double widthdraw){
-        if (widthdraw > balance)
+        if (widthdraw > balance) {
             System.out.println("Недостаточно денег на счету.");
-        else
+        }
+        else {
             balance = balance - widthdraw;
+        }
         return balance;
+
     }
 
     public double depositMoney ( double deposit){
@@ -19,7 +22,7 @@ public class bankAccount {
         return balance;
     }
 
-    public boolean send(bankAccount receiver, double amount){
+    public boolean send(BankAccount receiver, double amount){
         if (this.accountBalance() < amount) {
             System.out.println("Недостаточно денег на счету");
             return false;

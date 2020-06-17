@@ -1,17 +1,26 @@
 package orderAccount;
 
-public class depositAccount extends bankAccount{
-    public void withdrawMoney(){
-        System.out.println("Вы не можете вывести средства, так как не прошел месяц с последнего внесения");
-        return;
-    }
+import java.time.Period;
+import java.util.Date;
 
-    public double depositMoney ( double deposit){
-        balance = balance + deposit;
+public class DepositAccount extends BankAccount{
+    private long timeDeposit;
+    private long timeWithdraw;
+
+    public double withdrawMoney(double withdraw){
+        timeWithdraw = System.currentTimeMillis();
+        if (timeWithdraw - timeDeposit > 2.628e+9){
+            super.withdrawMoney(withdraw);
+        }
+        else {
+            System.out.println("Прошло меньше месяца с последнего взноса");
+        }
         return balance;
     }
 
-    public double accountBalance () {
+    public double depositMoney ( double deposit){
+        timeDeposit = System.currentTimeMillis();
+        balance = balance + deposit;
         return balance;
     }
 }
