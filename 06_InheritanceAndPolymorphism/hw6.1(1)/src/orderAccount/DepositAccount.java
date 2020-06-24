@@ -6,15 +6,18 @@ import java.util.Date;
 
 public class DepositAccount extends BankAccount{
 
-    LocalDate dateWithdraw = LocalDate.now();
-    LocalDate dateValidDeposit = dateWithdraw.minusMonths(1);
+    LocalDate dateWithdraw;
+    LocalDate dateValidDeposit;
     LocalDate dateDeposit;
 
-    Period period = Period.between(dateValidDeposit, dateDeposit);
-    int diff = period.getMonths();
-
     public double withdrawMoney(double withdraw){
-        if (diff > 1){
+        dateWithdraw = LocalDate.now();
+        dateValidDeposit = dateWithdraw.minusDays(30);
+
+        Period period = Period.between(dateValidDeposit, dateDeposit);
+        int diff = period.getDays();
+
+        if (diff > 30){
             super.withdrawMoney(withdraw);
         }
         else {
