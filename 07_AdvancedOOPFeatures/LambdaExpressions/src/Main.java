@@ -16,16 +16,20 @@ public class Main
         ArrayList<Employee> staff = loadStaffFromFile();
 
         Collections.sort(staff, (o1, o2) -> {
-            if (o1.getSalary() > o2.getSalary()) {
+            if (o1.getSalary() > o2.getSalary())
+            {
                 return 1;
             }
-            if (o1.getSalary() < o2.getSalary()) {
+            if (o1.getSalary() < o2.getSalary())
+            {
                 return -1;
             }
-            if (o1.getName().compareTo(o2.getName()) > 0) {
+            if (o1.getName().compareTo(o2.getName()) > 0)
+            {
                 return 1;
             }
-            if (o1.getName().compareTo(o2.getName()) < 0) {
+            if (o1.getName().compareTo(o2.getName()) < 0)
+            {
                 return -1;
             }
             return 0;
