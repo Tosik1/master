@@ -1,13 +1,25 @@
 package position;
 
-public class TopManager extends Company implements Employee {
+public class TopManager implements Employee {
+
+
+    public double fixedSalaryTopManager;
+    public double a = Company.incomeCompany;
+
+    public TopManager(double fixedSalary)
+    {
+        if (a >= 10000000)
+        {
+            fixedSalaryTopManager = 2.5 * fixedSalary;
+        }
+        else
+        {
+            fixedSalaryTopManager = fixedSalary;
+        }
+    }
+
     @Override
     public double getMonthSalary() {
-        double fixedSalaryTopManager = 40000.0;
-        if (incomeCompany >= 10000000)
-        {
-            return fixedSalaryTopManager * 2.5;
-        }
         return fixedSalaryTopManager;
     }
 }

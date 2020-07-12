@@ -1,24 +1,28 @@
 package position;
 
-public class Manager extends Company implements Employee {
+public class Manager implements Employee {
 
     public double salary;
 
-    public Manager()
+    Company company;
+
+    public Manager(double fixedSalary)
     {
-        this.salary = this.getMonthSalary();
+        double salesForCompany = Math.random() * 25000.0 + 115000.0;
+        this.salary = fixedSalary + (salesForCompany * 0.05);
     }
 
-    public double getSalary() {
-        return salary;
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     @Override
     public double getMonthSalary() {
-        double fixedSalaryManager = 40000.0;
-        double salesForCompany = Math.random() * 25000.0 + 115000.0;
-        this.salary = fixedSalaryManager + (salesForCompany * 0.05);
-        return fixedSalaryManager + (salesForCompany * 0.05);
+        return salary;
     }
 
 }

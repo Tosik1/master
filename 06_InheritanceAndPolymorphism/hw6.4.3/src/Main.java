@@ -1,25 +1,54 @@
-import position.Employee;
 import position.*;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 public class Main
 {
     public static void main(String[] args) {
 
-        System.out.println(Company.getIncomeCompany());
-        Company.hireAll("Manager", 80);
-        Company.hireAll("TopManager", 10);
-        Company.hireAll("Operator", 180);
+//        Manager manager1 = new Manager();
+//        System.out.println(manager1.getMonthSalary());
+//        ArrayList<Double> managers = new ArrayList<>();
+//        managers.add(manager1.getMonthSalary());
+//        managers.add((new Manager()).getMonthSalary());
+//
+//        for (int a = 0; a < 2; a++)
+//        {
+//            System.out.println(managers.get(a));
+//        }
 
-        System.out.println(Company.getTopSalaryStaff(10));
-        System.out.println("____________________");
-        System.out.println(Company.getLowestSalaryStaff(30));
-        Company.fire(135);
+        Company company = new Company("Apple",100000);
+        company.hireAll("Operator", 180);
+        company.hireAll("Manager", 80);
+        company.hireAll("TopManager", 10);
 
-        System.out.println("new table");
-        System.out.println(Company.getTopSalaryStaff(10));
-        System.out.println("____________________");
-        System.out.println(Company.getLowestSalaryStaff(30));
+        for (int a = 0; a < 10; a++)
+        {
+            System.out.println(company.getTopSalaryStaff(10).get(a).getMonthSalary());
+        }
+
+        System.out.println("------------------------------------------");
+
+        for (int a = 0; a < 30; a++)
+        {
+            System.out.println(company.getLowestSalaryStaff(30).get(a).getMonthSalary());
+        }
+        System.out.println("------------------------------------------");
+        System.out.println("------------------------------------------");
+        company.fire(135);
+
+        for (int a = 0; a < 10; a++)
+        {
+            System.out.println(company.getTopSalaryStaff(10).get(a).getMonthSalary());
+        }
+
+        System.out.println("------------------------------------------");
+
+        for (int a = 0; a < 30; a++)
+        {
+            System.out.println(company.getLowestSalaryStaff(30).get(a).getMonthSalary());
+        }
+
     }
 }

@@ -1,9 +1,16 @@
 package position;
 
 public class Operator implements Employee {
+
+    double salary;
+
     @Override
     public double getMonthSalary() {
-        double fixedSalaryOperator = 35000;
-        return fixedSalaryOperator;
+        return salary;
+    }
+
+    public Operator(double salary)
+    {
+        this.salary = salary;
     }
 }
