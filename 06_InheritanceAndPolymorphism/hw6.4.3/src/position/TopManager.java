@@ -2,13 +2,12 @@ package position;
 
 public class TopManager implements Employee {
 
-
+    Company company;
     public double fixedSalaryTopManager;
-    public double a = Company.incomeCompany;
 
-    public TopManager(double fixedSalary)
+    public TopManager(double fixedSalary, Company company)
     {
-        if (a >= 10000000)
+        if (company.getIncomeCompany() >= 10000000)
         {
             fixedSalaryTopManager = 2.5 * fixedSalary;
         }
@@ -16,6 +15,14 @@ public class TopManager implements Employee {
         {
             fixedSalaryTopManager = fixedSalary;
         }
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     @Override

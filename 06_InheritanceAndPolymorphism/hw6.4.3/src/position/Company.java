@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Company{
-    String company;
-    public static double incomeCompany;
-    ArrayList<Employee> salaryCompany = new ArrayList<>();
 
-    public Company(String company, double incomeCompany)
+    public double incomeCompany;
+    public ArrayList<Employee> salaryCompany = new ArrayList<>();
+
+    public Company(double incomeCompany)
     {
-        this.company = company;
         this.incomeCompany = incomeCompany;
     }
 
@@ -22,48 +21,32 @@ public class Company{
         this.incomeCompany = incomeCompany;
     }
 
-    public void hire(String position)
+    public void hire(Employee type, Company company)
     {
-        if (position == "Operator") {
-            salaryCompany.add(new Operator(36000));
-        }
-        if (position == "Manager") {
-            salaryCompany.add(new Manager(40000));
-        }
-        if (position == "TopManager") {
-            salaryCompany.add(new TopManager(42000));
-        }
+        company.salaryCompany.add(type);
     }
 
-    public void hireAll(String position, int countStaff)
+    public void hireAll(List<Employee> type, Company company, int countStaff)
     {
         for (int a = 0; a < countStaff; a++)
         {
-            if (position == "Operator") {
-                salaryCompany.add(new Operator(35000));
-            }
-            if (position == "Manager") {
-                salaryCompany.add(new Manager(40000));
-            }
-            if (position == "TopManager") {
-                salaryCompany.add(new TopManager(42000));
-            }
+            company.salaryCompany.add(type.get(a));
         }
     }
 
-    public void fire(int countStaff)
+    public void fire(int countStaff, Company company)
     {
         for (int a = 0; a < countStaff; a++)
         {
-            int c = (int) Math.round(Math.random() * (salaryCompany.size()));
-            salaryCompany.remove(c);
+            int c = (int) Math.round(Math.random() * (company.salaryCompany.size()));
+            company.salaryCompany.remove(c);
         }
     }
 
-    public List<Employee> getTopSalaryStaff(int count)
+    public List<Employee> getTopSalaryStaff(int count, Company company)
     {
         List<Employee> topSalary = new ArrayList<>();
-        topSalary.addAll(salaryCompany);
+        topSalary.addAll(company.salaryCompany);
         topSalary.sort((o1, o2) -> {
             if (o1.getMonthSalary() > o2.getMonthSalary())
                 return -1;
@@ -74,10 +57,10 @@ public class Company{
         return topSalary.subList(0, count);
     }
 
-    public List<Employee> getLowestSalaryStaff(int count)
+    public List<Employee> getLowestSalaryStaff(int count, Company company)
     {
         List<Employee> lowestSalary = new ArrayList<>();
-        lowestSalary.addAll(salaryCompany);
+        lowestSalary.addAll(company.salaryCompany);
         lowestSalary.sort((o1, o2) -> {
             if (o1.getMonthSalary() < o2.getMonthSalary())
                 return -1;
