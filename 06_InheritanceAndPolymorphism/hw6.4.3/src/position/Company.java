@@ -6,11 +6,12 @@ import java.util.List;
 public class Company{
 
     public double incomeCompany;
-    public ArrayList<Employee> salaryCompany = new ArrayList<>();
+    public ArrayList<Employee> employeeList;
 
     public Company(double incomeCompany)
     {
-        this.incomeCompany = incomeCompany;
+         new ArrayList<>();
+         this.incomeCompany = incomeCompany;
     }
 
     public double getIncomeCompany() {
@@ -23,14 +24,16 @@ public class Company{
 
     public void hire(Employee type, Company company)
     {
-        company.salaryCompany.add(type);
+        employeeList.add(type);
+        type.setCompany(this);
     }
 
     public void hireAll(List<Employee> type, Company company, int countStaff)
     {
         for (int a = 0; a < countStaff; a++)
         {
-            company.salaryCompany.add(type.get(a));
+            employeeList.add(type.get(a));
+            type.get(a).setCompany(this);
         }
     }
 
@@ -38,15 +41,15 @@ public class Company{
     {
         for (int a = 0; a < countStaff; a++)
         {
-            int c = (int) Math.round(Math.random() * (company.salaryCompany.size()));
-            company.salaryCompany.remove(c);
+            int c = (int) Math.round(Math.random() * (company.employeeList.size()));
+            employeeList.remove(c);
         }
     }
 
     public List<Employee> getTopSalaryStaff(int count, Company company)
     {
         List<Employee> topSalary = new ArrayList<>();
-        topSalary.addAll(company.salaryCompany);
+        topSalary.addAll(company.employeeList);
         topSalary.sort((o1, o2) -> {
             if (o1.getMonthSalary() > o2.getMonthSalary())
                 return -1;
@@ -60,7 +63,7 @@ public class Company{
     public List<Employee> getLowestSalaryStaff(int count, Company company)
     {
         List<Employee> lowestSalary = new ArrayList<>();
-        lowestSalary.addAll(company.salaryCompany);
+        lowestSalary.addAll(company.employeeList);
         lowestSalary.sort((o1, o2) -> {
             if (o1.getMonthSalary() < o2.getMonthSalary())
                 return -1;

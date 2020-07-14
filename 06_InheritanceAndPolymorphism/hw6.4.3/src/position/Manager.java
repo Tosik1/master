@@ -1,5 +1,7 @@
 package position;
 
+import java.util.ArrayList;
+
 public class Manager implements Employee {
 
     public double salary;
