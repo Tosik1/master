@@ -20,7 +20,7 @@ public class Main
             newOperator.add(employee);
         }
 
-        Apple.hireAll(newOperator, Apple, 180);
+        Apple.hireAll(newOperator);
 
         for (int a = 0; a < 80; a++)
         {
@@ -28,7 +28,7 @@ public class Main
             newManager.add(employee);
         }
 
-        Apple.hireAll(newManager, Apple, 80);
+        Apple.hireAll(newManager);
 
         for (int a = 0; a < 10; a++)
         {
@@ -36,32 +36,30 @@ public class Main
             newTopManager.add(employee);
         }
 
-        Apple.hireAll(newTopManager, Apple, 10);
+        Apple.hireAll(newTopManager);
 
         for (int a = 0; a < 10; a++)
         {
-            System.out.println(Apple.getTopSalaryStaff(10, Apple).get(a).getMonthSalary());
+            System.out.println(Apple.getTopSalaryStaff(10).get(a).getMonthSalary());
         }
 
-        Apple.getLowestSalaryStaff(30, Apple);
         for (int a = 0; a < 30; a++)
         {
-            System.out.println(Apple.getLowestSalaryStaff(30, Apple).get(a).getMonthSalary());
+            System.out.println(Apple.getLowestSalaryStaff(30).get(a).getMonthSalary());
         }
 
         System.out.println("--------------------------");
 
-        Apple.fire(135, Apple);
+        Apple.fire(135);
 
         for (int a = 0; a < 10; a++)
         {
-            System.out.println(Apple.getTopSalaryStaff(10, Apple).get(a).getMonthSalary());
+            System.out.println(Apple.getTopSalaryStaff(10).get(a).getMonthSalary());
         }
 
-        Apple.getLowestSalaryStaff(30, Apple);
         for (int a = 0; a < 30; a++)
         {
-            System.out.println(Apple.getLowestSalaryStaff(30, Apple).get(a).getMonthSalary());
+            System.out.println(Apple.getLowestSalaryStaff(30).get(a).getMonthSalary());
         }
 
     }

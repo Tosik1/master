@@ -10,7 +10,7 @@ public class Company{
 
     public Company(double incomeCompany)
     {
-         new ArrayList<>();
+         employeeList = new ArrayList<>();
          this.incomeCompany = incomeCompany;
     }
 
@@ -28,28 +28,28 @@ public class Company{
         type.setCompany(this);
     }
 
-    public void hireAll(List<Employee> type, Company company, int countStaff)
+    public void hireAll(List<Employee> type)
     {
-        for (int a = 0; a < countStaff; a++)
+        for (int a = 0; a < type.size(); a++)
         {
             employeeList.add(type.get(a));
             type.get(a).setCompany(this);
         }
     }
 
-    public void fire(int countStaff, Company company)
+    public void fire(int countStaff)
     {
         for (int a = 0; a < countStaff; a++)
         {
-            int c = (int) Math.round(Math.random() * (company.employeeList.size()));
+            int c = (int) Math.round(Math.random() * (this.employeeList.size()));
             employeeList.remove(c);
         }
     }
 
-    public List<Employee> getTopSalaryStaff(int count, Company company)
+    public List<Employee> getTopSalaryStaff(int count)
     {
         List<Employee> topSalary = new ArrayList<>();
-        topSalary.addAll(company.employeeList);
+        topSalary.addAll(this.employeeList);
         topSalary.sort((o1, o2) -> {
             if (o1.getMonthSalary() > o2.getMonthSalary())
                 return -1;
@@ -60,10 +60,10 @@ public class Company{
         return topSalary.subList(0, count);
     }
 
-    public List<Employee> getLowestSalaryStaff(int count, Company company)
+    public List<Employee> getLowestSalaryStaff(int count)
     {
         List<Employee> lowestSalary = new ArrayList<>();
-        lowestSalary.addAll(company.employeeList);
+        lowestSalary.addAll(this.employeeList);
         lowestSalary.sort((o1, o2) -> {
             if (o1.getMonthSalary() < o2.getMonthSalary())
                 return -1;
