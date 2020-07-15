@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
@@ -10,35 +11,18 @@ public class Main
     private static String staffFile = "data/staff.txt";
     private static String dateFormat = "dd.MM.yyyy";
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws ParseException {
         ArrayList<Employee> staff = loadStaffFromFile();
 
-        Collections.sort(staff, (o1, o2) -> {
-            if (o1.getSalary() > o2.getSalary())
-            {
-                return 1;
-            }
-            if (o1.getSalary() < o2.getSalary())
-            {
-                return -1;
-            }
-            if (o1.getName().compareTo(o2.getName()) > 0)
-            {
-                return 1;
-            }
-            if (o1.getName().compareTo(o2.getName()) < 0)
-            {
-                return -1;
-            }
-            return 0;
-        });
+        SimpleDateFormat date1 = new SimpleDateFormat("dd.MM.yyyy");
+        Date date2 = date1.parse("01.01.2017");
+        Date date3 = date1.parse("31.12.2017");
 
-        for (Employee employee : staff) {
-            System.out.println((employee));
-        }
-
-        System.out.println(staff.get(0).getName());
+        staff.stream().sorted(Comparator.comparing(e -> e.getSalary()))
+                .map(d -> d.getWorkStart())
+                .filter(date -> date.after(date2))
+                .filter(date -> date.before(date3))
+                .findFirst();
     }
 
     private static ArrayList<Employee> loadStaffFromFile()
