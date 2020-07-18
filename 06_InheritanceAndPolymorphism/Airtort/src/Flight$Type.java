@@ -1,4 +1,7 @@
-package PACKAGE_NAME;
-
-public class Flight$Type {
-}
+//public enum Flight$Type{
+//    ARRIVAL,
+//    DEPARTURE;
+//
+//    private Flight$Type() {
+//    }
+//}

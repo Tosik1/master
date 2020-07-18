@@ -18,11 +18,9 @@ public class Main
         Date date2 = date1.parse("01.01.2017");
         Date date3 = date1.parse("31.12.2017");
 
-        staff.stream().sorted(Comparator.comparing(e -> e.getSalary()))
-                .map(d -> d.getWorkStart())
-                .filter(date -> date.after(date2))
-                .filter(date -> date.before(date3))
-                .findFirst();
+        System.out.println(staff.stream().sorted(Comparator.comparing(e -> e.getSalary()))
+                .filter(e -> e.getWorkStart().after(date2) && e.getWorkStart().before(date3))
+                .findFirst());
     }
 
     private static ArrayList<Employee> loadStaffFromFile()
