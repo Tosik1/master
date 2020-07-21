@@ -17,6 +17,9 @@ public class Main {
         {
             airports.addAll(Airport.getInstance().getTerminals().get(a).getFlights());
         }
-        airports.stream().filter(d -> d.getDate().after(date0) && d.getDate().before(date1)).forEach(System.out::println);
+        airports.stream()
+                .filter(d -> d.getDate().after(date0) && d.getDate().before(date1))
+                .filter(t -> t.getType().toString().equals("DEPARTURE"))
+                .forEach(System.out::println);
     }
 }
