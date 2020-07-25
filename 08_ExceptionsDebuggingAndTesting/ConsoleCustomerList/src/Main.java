@@ -34,6 +34,9 @@ public class Main
                 }
             } catch (IllegalArgumentException ex) {
                 System.out.println(ex.getMessage());
+            } catch (PhoneException ex1){
+                System.out.println(ex1.getMessage());
+                System.out.println("Phone number you entered:  \t\t\t\t" + ex1.getNumber());
             }
         }
     }

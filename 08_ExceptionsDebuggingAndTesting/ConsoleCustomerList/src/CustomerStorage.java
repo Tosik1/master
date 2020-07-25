@@ -15,7 +15,7 @@ public class CustomerStorage
         storage = new HashMap<>();
     }
 
-    public void addCustomer(String data)
+    public void addCustomer(String data) throws PhoneException
     {
         String[] components = data.split("\\s+");
         if (components.length == 4) {
@@ -28,7 +28,7 @@ public class CustomerStorage
                 if (matcher1.matches()) {
                     storage.put(name, new Customer(name, components[3], components[2]));
                 } else {
-                    throw new IllegalArgumentException("Wrong format tel number. Correct format: +79215637722");
+                    throw new PhoneException("Wrong format tel number. Correct format: +79215637722", components[3]);
                 }
             } else {
                 throw new IllegalArgumentException("Wrong format email. Correct format: vasily.petrov@gmail.com");
