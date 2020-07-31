@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.io.File;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,12 +13,6 @@ public class Main {
 
     public static void main(String[] args) {
         long size = 0;
-        double c;
-        int b;
-        String kb = "Килобайт(ов)";
-        String mb = "Мегабайт(ов)";
-        String gb = "Гигабайт(ов)";
-        String ei;
 
         System.out.print("Введите адрес папки: ");
         scanner = new Scanner(System.in);
@@ -52,21 +47,16 @@ public class Main {
             size += files.get(a).length();
         }
 
-        c = size;
-        for (b = 0; c > 100; ++b){
-            c /= 1024;
-        }
-        if (b == 0){
-            ei = "Байт(ов)";
-        } if (b == 1){
-            ei = mb;
-        } if (b == 2){
-            ei = kb;
-        } else {
-            ei = gb;
-        }
 
 
-        System.out.println("Размер папки: " + c + " " + ei);
+        System.out.println("Размер папки: " + humanReadableByteCount(size, false));
+    }
+
+    public static String humanReadableByteCount(long bytes, boolean si) {
+        int unit = si ? 1000 : 1024;
+        if (bytes < unit) return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 }
