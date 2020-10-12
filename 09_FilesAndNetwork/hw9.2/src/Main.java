@@ -34,6 +34,7 @@ public class Main {
 
             for (String from2 : from1){
                 File from3 = new File(from, from2);
+
                 File to3 = new File(to, from2);
                 vozvratFile(from3, to3);
             }
