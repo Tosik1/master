@@ -37,11 +37,7 @@ public class Loader {
             sumCom += operation.getComing();
             sumCon += operation.getConsumption();
             if (org.containsKey(operation.getOrganization())){
-                double n = 0.0;
-                for(Operation operation1 : op){
-                    if (operation1.getOrganization().equals(operation.getOrganization()))
-                    n += operation1.getConsumption();
-                }
+                double n = org.get(operation.getOrganization()) + operation.getConsumption();
                 org.put(operation.getOrganization(), n);
             }else{
                 org.put(operation.getOrganization(), operation.getConsumption());
