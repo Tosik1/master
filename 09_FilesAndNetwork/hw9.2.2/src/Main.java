@@ -24,21 +24,24 @@ public class Main {
         File to = new File(lineTo);
 
         try {
-            copyDirectory(from, to);
+            copyFolder(lineFrom, lineTo);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public static void copyDirectory(File from, File to) throws IOException {
-        for (File list : from.listFiles()) {
-            File file0 = new File(from + "/" + list.getName());
-            File file1 = new File(to + "/" + list.getName());
-            if (list.isDirectory()) {
-                new File(file1.getAbsolutePath()).mkdir();
-                copyDirectory(file0, file1);
+    public static void copyFolder(String sourcePath, String destPath) throws IOException {
+        File sourceFile = new File(sourcePath);
+
+        for (File file : sourceFile.listFiles()) {
+            String sourcePathFile = sourcePath + "/" + file.getName();
+            String destPathFile = destPath + "/" + file.getName();
+
+            if (file.isDirectory()) {
+                new File(destPathFile).mkdir();
+                copyFolder(sourcePathFile, destPathFile);
             } else {
-                Files.copy(Paths.get(from.toString()), Paths.get(to.toString()), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(Paths.get(sourcePathFile), Paths.get(destPathFile), StandardCopyOption.REPLACE_EXISTING);
             }
         }
     }
