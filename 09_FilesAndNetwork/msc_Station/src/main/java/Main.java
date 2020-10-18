@@ -1,16 +1,28 @@
-import org.json.*;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.jsoup.*;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 
+import javax.sound.sampled.Line;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
         String to = "C:\\Users\\Kita\\java_basics\\java_basics\\09_FilesAndNetwork\\hw9.5\\mapmsc";
 
@@ -38,11 +50,10 @@ public class Main {
             JSONObject lines2 = new JSONObject();
             lines2.put("number", line1.attr("data-line"));
             lines2.put("name", line1.text());
-            arrayLines.put(lines2);
+            arrayLines.add(lines2);
         }
         mainObj.put("stations", stations);
         mainObj.put("lines", arrayLines);
-
 
         try {
             FileWriter file = new FileWriter(to + "\\" + "json.json");
@@ -51,6 +62,26 @@ public class Main {
             file.flush();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+//Чтение и вывод в консоль количество станций на каждой линии
+        ArrayList<String> asd = new ArrayList<String>(stations.keySet());
+        try {
+            JSONObject jo = (JSONObject) new JSONParser().parse(new InputStreamReader(new FileInputStream(to + "\\json.json")));
+            JSONObject countStationsObj = (JSONObject) jo.get("stations");
+
+            for (int i = 0; i < asd.size(); i++) {
+                JSONArray jsonArr = (JSONArray) countStationsObj.get(asd.get(i));
+                int count = 0;
+
+                while (count < jsonArr.size()) {
+                    count++;
+                }
+                System.out.println("Количество станций на " + asd.get(i) + " линии составляет: " + count);
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
         }
     }
 }
