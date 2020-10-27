@@ -1,4 +1,3 @@
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -54,29 +53,35 @@ public class Main {
     }
 
     public static void selectLines(Document doc){
-        Elements lines = doc.select("span.js-metro-line");
-        Elements stationsTable = doc.select("div.js-metro-stations");
+        Elements lines = doc.select("span.js-metro-line"); //номер и название линии
+        Elements stationsTable = doc.select("div.js-metro-stations"); //таблица
         for (Element line1 : lines) {
-            ArrayList<String> al = new ArrayList<String>();
+            ArrayList<Station> al = new ArrayList<>();
             numberLines.add(line1.attr("data-line"));
 
             selectStations(stationsTable, line1, al);
+            Line line11 = new Line(line1.text(), line1.attr("data-line"), al);
 
-            stations.put(line1.attr("data-line"), al);
+            ArrayList<String> stationsStr = new ArrayList<>();
+            for (Station st : al){
+                stationsStr.add(st.getNameStation());
+            }
+
+            stations.put(line11.getNumberLine(), stationsStr);
             JSONObject lines2 = new JSONObject();
-            lines2.put("number", line1.attr("data-line"));
-            lines2.put("name", line1.text());
+            lines2.put("number", line11.getNumberLine());
+            lines2.put("name", line11.getNameLine());
             arrayLines.add(lines2);
         }
     }
 
-    public static void selectStations(Elements stations, Element line1, ArrayList<String> masStations){
+    public static void selectStations(Elements stations, Element line1, ArrayList<Station> masStations){
         for (Element stations1 : stations) {
             if (stations1.attr("data-line").equals(line1.attr("data-line"))) {
                 String[] text = stations1.text().split("\\d+.");
                 for (String text1 : text) {
                     if (text1.length() == 0) continue;
-                    masStations.add(text1.trim());
+                    masStations.add(new Station(text1.trim()));
                 }
             }
         }
