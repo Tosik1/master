@@ -7,10 +7,9 @@ public class Line {
     private String numberLine;
     private ArrayList<Station> stations;
 
-    public Line(String nameLine, String numberLine, ArrayList<Station> stations){
+    public Line(String nameLine, String numberLine){
         this.nameLine = nameLine;
         this.numberLine = numberLine;
-        this.stations = stations;
     }
 
     public String getNameLine() {

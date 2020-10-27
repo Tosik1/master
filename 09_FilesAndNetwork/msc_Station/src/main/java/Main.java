@@ -57,10 +57,11 @@ public class Main {
         Elements stationsTable = doc.select("div.js-metro-stations"); //таблица
         for (Element line1 : lines) {
             ArrayList<Station> al = new ArrayList<>();
-            numberLines.add(line1.attr("data-line"));
+            Line line11 = new Line(line1.text(), line1.attr("data-line"));
+            numberLines.add(line11.getNumberLine());
 
-            selectStations(stationsTable, line1, al);
-            Line line11 = new Line(line1.text(), line1.attr("data-line"), al);
+            selectStations(stationsTable, line11, al);
+            line11.setStations(al);
 
             ArrayList<String> stationsStr = new ArrayList<>();
             for (Station st : al){
@@ -75,9 +76,9 @@ public class Main {
         }
     }
 
-    public static void selectStations(Elements stations, Element line1, ArrayList<Station> masStations){
+    public static void selectStations(Elements stations, Line line, ArrayList<Station> masStations){
         for (Element stations1 : stations) {
-            if (stations1.attr("data-line").equals(line1.attr("data-line"))) {
+            if (stations1.attr("data-line").equals(line.getNumberLine())) {
                 String[] text = stations1.text().split("\\d+.");
                 for (String text1 : text) {
                     if (text1.length() == 0) continue;
