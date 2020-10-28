@@ -10,6 +10,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 
 public class Main {
@@ -22,29 +25,30 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         Document doc = parseHTML("https://www.moscowmap.ru/metro.html#lines");
+        HashMap<String, Line> map = WebParser.parseLines(doc);
 
-        selectLines(doc);
+        selectLines(map);
 
         mainObj.put("stations", stations);
         mainObj.put("lines", arrayLines);
 
         writeToJSON(mainObj);
-        readStationsOnLine();
+        readStationsOnLine(map);
     }
 
-    public static void readStationsOnLine(){
+    public static void readStationsOnLine(HashMap<String, Line> map){
         try {
             JSONObject jo = (JSONObject) new JSONParser().parse(new InputStreamReader(new FileInputStream(to + "\\json.json")));
             JSONObject countStationsObj = (JSONObject) jo.get("stations");
 
-            for (int i = 0; i < numberLines.size(); i++) {
-                JSONArray jsonArr = (JSONArray) countStationsObj.get(numberLines.get(i));
+            for (Map.Entry<String, Line> entry : map.entrySet()) {
+                JSONArray jsonArr = (JSONArray) countStationsObj.get(entry.getValue().getNumberLine());
                 int count = 0;
 
                 while (count < jsonArr.size()) {
                     count++;
                 }
-                System.out.println("Количество станций на " + numberLines.get(i) + " линии составляет: " + count);
+                System.out.println("Количество станций на " + entry.getValue().getNumberLine() + " линии составляет: " + count);
             }
         }
         catch (Exception ex){
@@ -52,39 +56,18 @@ public class Main {
         }
     }
 
-    public static void selectLines(Document doc){
-        Elements lines = doc.select("span.js-metro-line"); //номер и название линии
-        Elements stationsTable = doc.select("div.js-metro-stations"); //таблица
-        for (Element line1 : lines) {
-            ArrayList<Station> al = new ArrayList<>();
-            Line line11 = new Line(line1.text(), line1.attr("data-line"));
-            numberLines.add(line11.getNumberLine());
-
-            selectStations(stationsTable, line11, al);
-            line11.setStations(al);
-
-            ArrayList<String> stationsStr = new ArrayList<>();
-            for (Station st : al){
-                stationsStr.add(st.getNameStation());
+    public static void selectLines(HashMap<String, Line> map){
+        for (Map.Entry<String, Line> entry : map.entrySet()) {
+            JSONArray ja = new JSONArray();
+            ArrayList<String> list = new ArrayList<>();
+            for (Station st : entry.getValue().getStations()){
+                list.add(st.getNameStation());
             }
-
-            stations.put(line11.getNumberLine(), stationsStr);
+            stations.put(entry.getValue().getNumberLine(), list);
             JSONObject lines2 = new JSONObject();
-            lines2.put("number", line11.getNumberLine());
-            lines2.put("name", line11.getNameLine());
+            lines2.put("number", entry.getValue().getNumberLine());
+            lines2.put("name", entry.getValue().getNameLine());
             arrayLines.add(lines2);
-        }
-    }
-
-    public static void selectStations(Elements stations, Line line, ArrayList<Station> masStations){
-        for (Element stations1 : stations) {
-            if (stations1.attr("data-line").equals(line.getNumberLine())) {
-                String[] text = stations1.text().split("\\d+.");
-                for (String text1 : text) {
-                    if (text1.length() == 0) continue;
-                    masStations.add(new Station(text1.trim()));
-                }
-            }
         }
     }
 
