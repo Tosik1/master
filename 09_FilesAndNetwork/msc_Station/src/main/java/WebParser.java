@@ -1,10 +1,11 @@
+import mscMetro.Line;
+import mscMetro.Station;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class WebParser {
     public static HashMap<String, Line> parseLines(Document doc){

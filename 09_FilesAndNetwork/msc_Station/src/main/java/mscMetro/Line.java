@@ -1,3 +1,5 @@
+package mscMetro;
+
 import java.util.ArrayList;
 
 public class Line {

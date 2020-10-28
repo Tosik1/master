@@ -1,3 +1,5 @@
+package mscMetro;
+
 public class Station {
     private String nameStation;
 
