@@ -20,7 +20,6 @@ public class Main {
         Document doc = parseHTML("https://www.moscowmap.ru/metro.html#lines");
         HashMap<String, Line> map = WebParser.parseLines(doc);
 
-
         JSONWriter.write(map);
         readStationsOnLine(map);
     }
