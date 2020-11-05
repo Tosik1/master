@@ -35,7 +35,7 @@ public class WebParser {
                     if (a.select("span.t-icon-metroln").size() != 0) {
                         for (Element con : a.select("span.t-icon-metroln")){
                             String b = con.attr("title");
-                            station.addCon(el.select("span.t-icon-metroln").attr("class").substring(18),
+                            station.addCon(con.attr("class").substring(18),
                                     b.substring(b.indexOf("«") + 1, b.lastIndexOf("»")));
                         }
                     }
