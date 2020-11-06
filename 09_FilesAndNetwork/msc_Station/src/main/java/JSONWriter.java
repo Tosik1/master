@@ -41,7 +41,6 @@ public class JSONWriter {
                 JSONArray array2 = new JSONArray();
                 if (st.getCon().size() !=0) {
                     JSONObject obj0 = new JSONObject();
-//                    if (connections.equals()) {
                         obj0.put("line", entry.getValue().getNumberLine());
                         obj0.put("station", st.getNameStation());
                         array2.add(obj0);
@@ -52,7 +51,6 @@ public class JSONWriter {
                             array2.add(obj1);
                         }
                         connections.add(array2);
-//                    }
                 }
             }
             stations.put(entry.getValue().getNumberLine(), list);
