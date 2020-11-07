@@ -34,4 +34,13 @@ public class Subscription {
     public void setCourseId(int courseId) {
         this.courseId = courseId;
     }
+
+    public PurchaseList getPurchaseList() {
+        return purchaseList;
+    }
+
+    public void setPurchaseList(PurchaseList purchaseList) {
+        this.purchaseList = purchaseList;
+    }
+
 }
