@@ -22,6 +22,9 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">validate</property>
         <mapping class="Course"/>
+        <mapping class="Student"/>
+        <mapping class="Subscription"/>
+        <mapping class="Teacher"/>
 
 </session-factory>
 

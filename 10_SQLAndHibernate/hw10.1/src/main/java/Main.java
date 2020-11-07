@@ -13,12 +13,6 @@ public class Main {
 
         Session session = sessionFactory.openSession();
 
-        //Указание id курса.
-        int id = 1;
-        Course course = session.get(Course.class, id);
-        System.out.println(course.getName());
-        System.out.println(course.getStudentsCount());
-
         sessionFactory.close();
     }
 }
