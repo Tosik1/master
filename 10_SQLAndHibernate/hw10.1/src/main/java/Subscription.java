@@ -4,43 +4,40 @@ import java.util.Date;
 @Entity
 @Table(name = "Subscriptions")
 public class Subscription {
-    @Id
-    @Column(name = "student_id")
-    private int studentId;
 
-    @Id
-    @Column(name = "course_id")
-    private int courseId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "student_id")
+    private Student subscriptionStudent;
 
-    @ManyToOne
-    @JoinTable(name = "students",
-    joinColumns = {@JoinColumn(name = "student_id")},
-    inverseJoinColumns = {@JoinColumn(name = "student_name")})
-    private PurchaseList purchaseList;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "course_id")
+    private Course subscriptionCourse;
 
+    @Column(name = "subscription_date")
+    private Date subscriptionDate;
 
-    public int getStudentId() {
-        return studentId;
+    public Student getSubscriptionStudent() {
+        return subscriptionStudent;
     }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
+    public void setSubscriptionStudent(Student subscriptionStudent) {
+        this.subscriptionStudent = subscriptionStudent;
     }
 
-    public int getCourseId() {
-        return courseId;
+    public Course getSubscriptionCourse() {
+        return subscriptionCourse;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+    public void setSubscriptionCourse(Course subscriptionCourse) {
+        this.subscriptionCourse = subscriptionCourse;
     }
 
-    public PurchaseList getPurchaseList() {
-        return purchaseList;
+    public Date getSubscriptionDate() {
+        return subscriptionDate;
     }
 
-    public void setPurchaseList(PurchaseList purchaseList) {
-        this.purchaseList = purchaseList;
+    public void setSubscriptionDate(Date subscriptionDate) {
+        this.subscriptionDate = subscriptionDate;
     }
 
 }

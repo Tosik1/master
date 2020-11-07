@@ -1,5 +1,6 @@
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class PurchaseList {
@@ -7,7 +8,7 @@ public class PurchaseList {
     private Student student;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private Course course;
+    private List<Course> course;
 
     private int price;
 
@@ -22,11 +23,11 @@ public class PurchaseList {
         this.student = student;
     }
 
-    public Course getCourse() {
+    public List<Course> getCourse() {
         return course;
     }
 
-    public void setCourse(Course course) {
+    public void setCourse(List<Course> course) {
         this.course = course;
     }
 
