@@ -5,31 +5,18 @@ import java.util.Date;
 @Table(name = "Subscriptions")
 public class Subscription {
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "student_id")
-    private Student subscriptionStudent;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "course_id")
-    private Course subscriptionCourse;
+    @EmbeddedId
+    private Key id;
 
     @Column(name = "subscription_date")
     private Date subscriptionDate;
 
-    public Student getSubscriptionStudent() {
-        return subscriptionStudent;
+    public Key getId() {
+        return id;
     }
 
-    public void setSubscriptionStudent(Student subscriptionStudent) {
-        this.subscriptionStudent = subscriptionStudent;
-    }
-
-    public Course getSubscriptionCourse() {
-        return subscriptionCourse;
-    }
-
-    public void setSubscriptionCourse(Course subscriptionCourse) {
-        this.subscriptionCourse = subscriptionCourse;
+    public void setId(Key id) {
+        this.id = id;
     }
 
     public Date getSubscriptionDate() {
