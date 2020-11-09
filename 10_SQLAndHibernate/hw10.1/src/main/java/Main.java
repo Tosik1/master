@@ -7,12 +7,9 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 public class Main {
     public static void main(String[] args) {
-        StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-        Metadata metadata = new MetadataSources(registry).getMetadataBuilder().build();
-        SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
+        SessionFactory sf = Initial.initialization();
+        Session session = Initial.openSession(sf);
 
-        Session session = sessionFactory.openSession();
-
-        sessionFactory.close();
+        sf.close();
     }
 }
