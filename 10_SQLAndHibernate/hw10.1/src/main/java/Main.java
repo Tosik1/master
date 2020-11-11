@@ -24,16 +24,34 @@ public class Main {
         query.select(root);
         List<Subscription> subList = session.createQuery(query).getResultList();
 
+        CriteriaQuery<Student> queryStudent = builder.createQuery(Student.class);
+        Root<Student> rootStudent = queryStudent.from(Student.class);
+        queryStudent.select(rootStudent);
+        List<Student> studList = session.createQuery(queryStudent).getResultList();
+
+        CriteriaQuery<Course> queryCourse = builder.createQuery(Course.class);
+        Root<Course> rootCourse = queryCourse.from(Course.class);
+        queryCourse.select(rootCourse);
+        List<Course> courseList = session.createQuery(queryCourse).getResultList();
+
         Transaction transaction = session.beginTransaction();
         for (Subscription sub : subList){
-            LinkedPurchaseList lpl = new LinkedPurchaseList();
-            Key key = new Key();
-            key.setCourseId(sub.getId().getCourseId());
-            key.setStudentId(sub.getId().getStudentId());
-            lpl.setId(key);
-            lpl.setCourseId(sub.getId().getCourseId());
-            lpl.setStudentId(sub.getId().getStudentId());
-            session.save(lpl);
+            for (Student stud : studList) {
+                if (sub.getStudentId() == stud.getId()) {
+                    for (Course course : courseList) {
+                        if (sub.getCourseId() == course.getId()) {
+                            LinkedPurchaseList lpl = new LinkedPurchaseList();
+                            LinkedPurchaseList.Key key = new LinkedPurchaseList.Key();
+                            key.setStudent(stud);
+                            key.setCourse(course);
+                            lpl.setPrice(course.getPrice());
+                            lpl.setSubscriptionDate(sub.getSubscriptionDate());
+                            lpl.setId(key);
+                            session.save(lpl);
+                        }
+                    }
+                }
+            }
         }
 
         transaction.commit();
