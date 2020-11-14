@@ -19,10 +19,11 @@ public class Main {
         Session session = Initial.openSession(sf);
 
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Subscription> query = builder.createQuery(Subscription.class);
-        Root<Subscription> root = query.from(Subscription.class);
+
+        CriteriaQuery<PurchaseList> query = builder.createQuery(PurchaseList.class);
+        Root<PurchaseList> root = query.from(PurchaseList.class);
         query.select(root);
-        List<Subscription> subList = session.createQuery(query).getResultList();
+        List<PurchaseList> purList = session.createQuery(query).getResultList();
 
         CriteriaQuery<Student> queryStudent = builder.createQuery(Student.class);
         Root<Student> rootStudent = queryStudent.from(Student.class);
@@ -35,17 +36,17 @@ public class Main {
         List<Course> courseList = session.createQuery(queryCourse).getResultList();
 
         Transaction transaction = session.beginTransaction();
-        for (Subscription sub : subList){
+        for (PurchaseList pur : purList){
             for (Student stud : studList) {
-                if (sub.getStudentId() == stud.getId()) {
+                if (pur.getKey().getStudentName().equals(stud.getName())) {
                     for (Course course : courseList) {
-                        if (sub.getCourseId() == course.getId()) {
+                        if (pur.getKey().getCourseName().equals(course.getName())) {
                             LinkedPurchaseList lpl = new LinkedPurchaseList();
                             LinkedPurchaseList.Key key = new LinkedPurchaseList.Key();
                             key.setStudent(stud);
                             key.setCourse(course);
-                            lpl.setPrice(course.getPrice());
-                            lpl.setSubscriptionDate(sub.getSubscriptionDate());
+                            lpl.setPrice(pur.getPrice());
+                            lpl.setSubscriptionDate(pur.getSubscriptionDate());
                             lpl.setId(key);
                             session.save(lpl);
                         }

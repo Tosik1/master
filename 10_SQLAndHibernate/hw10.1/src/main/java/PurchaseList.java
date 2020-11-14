@@ -6,6 +6,7 @@ import java.util.Objects;
 
 @Entity
 public class PurchaseList {
+
     @EmbeddedId
     private PurchaseListKey key;
 
@@ -15,6 +16,14 @@ public class PurchaseList {
     private Date subscriptionDate;
 
     PurchaseList(){}
+
+    public PurchaseListKey getKey() {
+        return key;
+    }
+
+    public void setKey(PurchaseListKey key) {
+        this.key = key;
+    }
 
     public int getPrice() {
         return price;
@@ -33,7 +42,7 @@ public class PurchaseList {
     }
 
     @Embeddable
-    public class PurchaseListKey implements Serializable {
+    public static class PurchaseListKey implements Serializable {
         @Column(name = "course_name")
         private String courseName;
 

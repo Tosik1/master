@@ -26,6 +26,7 @@
         <mapping class="Subscription"/>
         <mapping class="Teacher"/>
         <mapping class="LinkedPurchaseList"/>
+        <mapping class="PurchaseList"/>
 
 </session-factory>
 
