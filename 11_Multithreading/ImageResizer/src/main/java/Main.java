@@ -17,6 +17,8 @@ public class Main
         System.out.print("Введите количество ядер на компьютере: ");
         String countCore = br.readLine();
         int count = Integer.parseInt(countCore);
+//        или проще:
+//        int count = Runtime.getRuntime().availableProcessors();
 
         File srcDir = new File(srcFolder);
 

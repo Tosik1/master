@@ -1,3 +1,4 @@
+import org.imgscalr.Scalr;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -28,9 +29,7 @@ public class ImageResizer implements Runnable {
                 int newHeight = (int) Math.round(
                         image.getHeight() / (image.getWidth() / (double) newWidth)
                 );
-                BufferedImage newImage = new BufferedImage(
-                        newWidth, newHeight, BufferedImage.TYPE_INT_RGB
-                );
+                BufferedImage newImage = Scalr.resize(image, newWidth, newHeight, Scalr.OP_ANTIALIAS);
 
                 int widthStep = image.getWidth() / newWidth;
                 int heightStep = image.getHeight() / newHeight;
