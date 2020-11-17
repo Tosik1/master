@@ -38,7 +38,8 @@ public class Bank
                     to.setMoney(to.getMoney() + amount);
                     System.out.println(amount + " руб. со счета " + fromAccountNum + " переведены на счет " + toAccountNum);
                 }
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
+                System.out.println("Возможно счет заблокирован.");
                 e.printStackTrace();
             }
         }

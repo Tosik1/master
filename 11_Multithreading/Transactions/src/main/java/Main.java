@@ -14,7 +14,6 @@ public class Main {
         for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++) {
             int finalI = i;
             new Thread(() -> {
-//                for (int j = 0; j < mapAccount.size(); j += 2)
                     bankTest.transfer(mapAccount.get(Integer.toString(finalI)).getAccNumber(),
                             mapAccount.get(Integer.toString(finalI + 1)).getAccNumber(),
                             60000, mapAccount);
