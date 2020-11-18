@@ -18,7 +18,7 @@ public class Bank
         return random.nextBoolean();
     }
 
-    public void transfer(String fromAccountNum, String toAccountNum, long amount, HashMap<String, Account> accounts)
+    public synchronized void transfer(String fromAccountNum, String toAccountNum, long amount, HashMap<String, Account> accounts)
     {
         this.accounts = accounts;
         if (amount > accounts.get(fromAccountNum).getMoney()){
@@ -33,9 +33,13 @@ public class Bank
                 else {
                     Account from = accounts.get(fromAccountNum);
                     Account to = accounts.get(toAccountNum);
-
-                    from.setMoney(from.getMoney() - amount);
-                    to.setMoney(to.getMoney() + amount);
+                    long a = from.getMoney() - amount;
+                    long b = to.getMoney() + amount;
+//                  Второй способ синхронизации:
+//                    synchronized (accounts) {
+                        from.setMoney(a);
+                        to.setMoney(b);
+//                    }
                     System.out.println(amount + " руб. со счета " + fromAccountNum + " переведены на счет " + toAccountNum);
                 }
             } catch (Exception e) {
