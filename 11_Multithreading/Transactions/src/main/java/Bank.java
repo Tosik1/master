@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class Bank
 {
+    private static final Object tieLock = new Object();
     private HashMap<String, Account> accounts;
     private final Random random = new Random();
 
@@ -18,7 +19,7 @@ public class Bank
         return random.nextBoolean();
     }
 
-    public synchronized void transfer(String fromAccountNum, String toAccountNum, long amount, HashMap<String, Account> accounts)
+    public void transfer(String fromAccountNum, String toAccountNum, long amount, HashMap<String, Account> accounts)
     {
         this.accounts = accounts;
         if (amount > accounts.get(fromAccountNum).getMoney()){
@@ -35,16 +36,38 @@ public class Bank
                     Account to = accounts.get(toAccountNum);
                     long a = from.getMoney() - amount;
                     long b = to.getMoney() + amount;
-//                  Второй способ синхронизации:
-//                    synchronized (accounts) {
-                        from.setMoney(a);
-                        to.setMoney(b);
-//                    }
+                    int toHash = System.identityHashCode(toAccountNum);
+                    int fromHash = System.identityHashCode(fromAccountNum);
+                    if (fromHash < toHash) {
+                        synchronized (from) {
+                            synchronized (to) {
+                                from.setMoney(a);
+                                to.setMoney(b);
+                            }
+                        }
+                    } else if (fromHash > toHash){
+                        synchronized (to){
+                            synchronized (from){
+                                from.setMoney(a);
+                                to.setMoney(b);
+                            }
+                        }
+                    } else {
+                        synchronized (tieLock){
+                            synchronized (from){
+                                synchronized (to){
+                                    from.setMoney(a);
+                                    to.setMoney(b);
+                                }
+                            }
+                        }
+                    }
+                    from.setMoney(a);
+                    to.setMoney(b);
                     System.out.println(amount + " руб. со счета " + fromAccountNum + " переведены на счет " + toAccountNum);
                 }
             } catch (Exception e) {
                 System.out.println("Возможно счет заблокирован.");
-                e.printStackTrace();
             }
         }
     }
