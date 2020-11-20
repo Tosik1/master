@@ -62,8 +62,6 @@ public class Bank
                             }
                         }
                     }
-                    from.setMoney(a);
-                    to.setMoney(b);
                     System.out.println(amount + " руб. со счета " + fromAccountNum + " переведены на счет " + toAccountNum);
                 }
             } catch (Exception e) {
