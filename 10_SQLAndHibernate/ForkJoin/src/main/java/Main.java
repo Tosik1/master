@@ -6,8 +6,9 @@ public class Main {
         String sites = "https://skillbox.ru";
         HashSet<String> allSites = new HashSet<>();
         allSites.add(sites);
-        allSites.addAll(new ForkJoinPool().invoke(new SiteAdress(allSites)));
-        for (String i : allSites){
+//        allSites.addAll(new ForkJoinPool().invoke(new SiteAdress(allSites)));
+        HashSet<String> qwe = new HashSet<>(new ForkJoinPool().invoke(new SiteAdress(allSites)));
+        for (String i : qwe){
             System.out.println(i);
         }
     }
