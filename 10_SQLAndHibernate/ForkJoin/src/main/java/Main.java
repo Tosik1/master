@@ -1,12 +1,14 @@
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.concurrent.ForkJoinPool;
 
 public class Main {
     public static void main(String[] args) {
         String sites = "https://skillbox.ru";
-        String sitesLine = new ForkJoinPool().invoke(new SiteAdress(sites));
-        System.out.println(sitesLine);
-
+        HashSet<String> allSites = new HashSet<>();
+        allSites.add(sites);
+        allSites.addAll(new ForkJoinPool().invoke(new SiteAdress(allSites)));
+        for (String i : allSites){
+            System.out.println(i);
+        }
     }
 }

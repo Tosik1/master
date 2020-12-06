@@ -1,45 +1,34 @@
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.*;
-import org.jsoup.select.Elements;
-
-import javax.print.Doc;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
-public class SiteAdress extends RecursiveTask<String> {
+public class SiteAdress extends RecursiveTask<HashSet> {
 
-    private String siteAdress;
-    private ArrayList<String> listSites = new ArrayList<>();
+    private HashSet<String> listSites = new HashSet<>();
+    private HashSet<String> sites;
 
-    public SiteAdress(String siteAdress){
-        this.siteAdress = siteAdress;
+    private String fullMap;
+
+    public SiteAdress(HashSet<String> sites){
+        this.sites = sites;
     }
 
     @Override
-    protected String compute() {
+    protected HashSet<String> compute() {
         List<SiteAdress> taskList = new ArrayList<>();
-        String fullMap = "";
         try {
-            Document doc = parseHTML(siteAdress);
-            Elements sites = doc.select("a");
-            for (Element e : sites) {
-                String a = e.attr("href");
-                if (a.substring(0,1).equals("/")) {
-                    if (!a.contains("#")) {
-                        listSites.add(a);
-                        SiteAdress task = new SiteAdress("https://skillbox.ru" + a);
-                        task.fork();
-                        taskList.add(task);
-                    }
-                }
+            for (String site : sites) {
+                listSites = Parser.parseHTML(site);
+                SiteAdress task = new SiteAdress(listSites);
+                task.fork();
+                taskList.add(task);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         for (SiteAdress task : taskList){
-            fullMap = fullMap.concat(task.join()) ;
+            sites.addAll(task.join());
             try {
                 task.wait(200);
             } catch (InterruptedException e) {
@@ -47,11 +36,10 @@ public class SiteAdress extends RecursiveTask<String> {
             }
         }
 
-        return fullMap;
+        return sites;
     }
 
-    public static Document parseHTML(String site) throws IOException {
-        Document document = Jsoup.connect(site).ignoreContentType(true).ignoreHttpErrors(true).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:49.0) Gecko/20100101 Firefox/49.0").followRedirects(true).timeout(100000).maxBodySize(0).get();
-        return document;
+    public HashSet<String> getSites() {
+        return sites;
     }
 }
