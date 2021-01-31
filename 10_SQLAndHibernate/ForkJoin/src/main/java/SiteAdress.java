@@ -16,7 +16,8 @@ public class SiteAdress extends RecursiveTask<HashSet> {
         HashSet<SiteAdress> taskList = new HashSet<>();
         try {
             for (String str1 : listSites) {
-                SiteAdress task = new SiteAdress(Parser.parseHTML(str1));
+                listSites.addAll(Parser.parseHTML(str1));
+                SiteAdress task = new SiteAdress(listSites);
                 task.fork();
                 taskList.add(task);
             }
@@ -24,13 +25,12 @@ public class SiteAdress extends RecursiveTask<HashSet> {
             e.printStackTrace();
         }
         for (SiteAdress task : taskList){
-            listSites.addAll(task.join());
-
-//            try {
-//                task.wait(200);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+                listSites.addAll(task.join());
+            try {
+                task.wait(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         return listSites;
