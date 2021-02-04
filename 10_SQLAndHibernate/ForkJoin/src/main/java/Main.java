@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.concurrent.ForkJoinPool;
 
@@ -5,12 +7,9 @@ public class Main {
 
     static HashSet<String> listSites = new HashSet<>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         String sites = "https://skillbox.ru";
-        listSites.add(sites);
-        HashSet<String> qwe = new HashSet<>(new ForkJoinPool().invoke(new SiteAdress(listSites)));
-        for (String i : qwe){
-            System.out.println(i);
-        }
+        new ForkJoinPool().invoke(new SiteAdress(Parser.parseHTML(sites)));
+        Writer.write(listSites);
     }
 }
