@@ -10,25 +10,21 @@ public class Writer {
     private static String to = "C:\\Users\\Kita\\Desktop";
     private static String sites = "https://skillbox.ru";
 
-    public static void write(HashSet<String> set){
+    public static void write(Set<String> set){
         List<String> list = set.stream().sorted().collect(Collectors.toList());
-        String b = null;
 //        Set<String> map = new TreeSet<>(set);
 
         try {
             FileWriter file = new FileWriter(to + "\\" + "json.txt", false);
-            int count = 0;
             for (String a : list) {
-                if (b != null){
-                    if (a.startsWith(b)){
-                        count++;
-                        file.write( "\t" + a + "\n");
-                        b = a;
-                    }
-                    file.write( a + "\n");
-                    continue;
+                String b = a.replace("/", "");
+                int count = a.length() - b.length() - 3;
+                if (a.contains("?")){
+                    count++;
                 }
-                b = a;
+                for (int i = 0; i < count; i++){
+                    file.write("\t");
+                }
                 file.write(a + "\n");
             }
             file.flush();

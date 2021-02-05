@@ -5,15 +5,12 @@ import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Parser {
     public static final List<String> STOP_WORDS = Arrays.asList("instagram", ".pdf", "twitter", "facebook", "utm", "vkontakte");
 
-    public static HashSet<String> parseHTML(String site) throws InterruptedException {
+    public static Set<String> parseHTML(String site) throws InterruptedException {
         Thread.sleep(150);
         HashSet<String> set = new HashSet<>();
         Document document = null;
@@ -29,10 +26,10 @@ public class Parser {
                         synchronized (Main.listSites) {
                             if (d.indexOf("/") == 0) {
                                 set.add("https://skillbox.ru" + d);
-                                Main.listSites.add("https://skillbox.ru" + d);
+//                                Main.listSites.add("https://skillbox.ru" + d);
                             } else if (d.indexOf("https://skillbox.ru") == 0) {
                                 set.add(d);
-                                Main.listSites.add(d);
+//                                Main.listSites.add(d);
                             }
                         }
                     }
