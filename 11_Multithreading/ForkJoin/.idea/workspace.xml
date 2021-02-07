@@ -19,11 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edc3cdc7-0678-43d5-87aa-9f51d9b17b66" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../11_Multithreading/ForkJoin/ForkJoin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../11_Multithreading/ForkJoin/ForkJoin.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookLibrary/bookLibrary.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../BookLibrary/bookLibrary.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/Main.java" afterDir="false" />
+    <list default="true" id="b4dd7c84-ed6c-4555-b9b6-fd9ce8f4fc82" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/ForkJoin.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../12_SpringBootWebDevelopment/BookLibrary/bookLibrary.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../12_SpringBootWebDevelopment/BookLibrary/bookLibrary.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +31,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="ProjectId" id="1o9SibTw5WfhjRhoqrhE6SanwD2" />
+  <component name="ProjectId" id="1o9UZYgg47N4fadVgE60GfprD96" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -42,23 +40,30 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../11_Multithreading/ForkJoin" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="edc3cdc7-0678-43d5-87aa-9f51d9b17b66" name="Default Changelist" comment="" />
-      <created>1612697440301</created>
+      <changelist id="b4dd7c84-ed6c-4555-b9b6-fd9ce8f4fc82" name="Default Changelist" comment="" />
+      <created>1612698355844</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1612697440301</updated>
+      <updated>1612698355844</updated>
     </task>
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
-    <option name="oldMeFiltersMigrated" value="true" />
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
