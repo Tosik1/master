@@ -1,11 +1,13 @@
 package response;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Case {
     private int id;
     private String name;
-    private Date date;
+    private String date;
 
     public int getId() {
         return id;
@@ -23,11 +25,11 @@ public class Case {
         this.name = name;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date){
         this.date = date;
     }
 }
