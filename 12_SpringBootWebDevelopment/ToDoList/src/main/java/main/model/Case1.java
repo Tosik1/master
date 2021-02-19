@@ -1,5 +1,7 @@
 package main.model;
 
+import org.hibernate.annotations.Table;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,7 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-public class Case {
+
+public class Case1 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
