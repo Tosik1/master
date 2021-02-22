@@ -1,5 +1,6 @@
 package main;
 
+import main.model.Case1Dao;
 import main.model.CaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,50 +15,41 @@ import java.util.Optional;
 @RestController
 public class ListController {
 
-    @Autowired
-    private CaseRepository caseRepository;
-
-    @GetMapping("/cases/")
+//    @GetMapping("/cases/")
     public List<Case1> list(){
-        Iterable<Case1> caseIterable = caseRepository.findAll();
-        ArrayList<Case1> cases = new ArrayList<>();
-        for (Case1 cas : caseIterable){
-            cases.add(cas);
-        }
-        return cases;
+        Case1Dao case1DaoList = new Case1Dao();
+        return case1DaoList.getAll();
     }
 
-    @PostMapping("/cases/")
+//    @PostMapping("/cases/")
     public int add(Case1 cas){
-        Case1 newCase = caseRepository.save(cas);
-        return newCase.getId();
+        Case1Dao case1DaoAdd = new Case1Dao();
+        case1DaoAdd.save(cas);
+        return cas.getId();
     }
 
-    @PutMapping("/cases/{id}")
-    public Case1 put(@PathVariable int id, Case1 cas){
-
-        Optional<Case1> newCase = caseRepository.findById(id);
-        newCase.get().setName(cas.getName());
-        newCase.get().setDate(cas.getDate());
-        return caseRepository.save(newCase.get());
+//    @PutMapping("/cases/{id}")
+    public int put(@PathVariable int id, Case1 cas){
+        Case1Dao case1DaoUpgrade = new Case1Dao();
+        case1DaoUpgrade.update(id, cas);
+        return id;
     }
 
-    @GetMapping("/cases/{id}")
+//    @GetMapping("/cases/{id}")
     public ResponseEntity get(@PathVariable int id){
-        Optional<Case1> optionalCase1 = caseRepository.findById(id);
-        if (!optionalCase1.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        return new ResponseEntity(optionalCase1.get(), HttpStatus.OK);
+        Case1Dao daoGet = new Case1Dao();
+        return daoGet.get(id);
     }
 
-    @DeleteMapping("/cases/{id}")
+//    @DeleteMapping("/cases/{id}")
     public void deleteCase(@PathVariable int id){
-        caseRepository.deleteById(id);
+        Case1Dao daoDelete = new Case1Dao();
+        daoDelete.delete(id);
     }
 
-    @DeleteMapping("/cases/")
+//    @DeleteMapping("/cases/")
     public void deleteAllCases(){
-        caseRepository.deleteAll();
+        Case1Dao daoDelete = new Case1Dao();
+        daoDelete.deleteAll();
     }
 }
