@@ -7,11 +7,11 @@ import java.util.Optional;
 
 public interface Dao {
 
-    ResponseEntity get(int id);
+    Case1 get(int id);
 
     List<Case1> getAll();
 
-    void save(Case1 cas);
+    int save(Case1 cas);
 
     void update(int id ,Case1 cas);
 
