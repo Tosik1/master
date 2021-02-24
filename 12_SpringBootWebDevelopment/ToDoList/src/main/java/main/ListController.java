@@ -25,31 +25,30 @@ public class ListController {
         this.case1Dao = case1Dao;
     }
 
-    @GetMapping("/cases/")
-    public List<Case1> list(){
-        Case1Dao case1DaoList = new Case1Dao();
-        return case1DaoList.getAll();
-    }
 
     @PostMapping("/cases/")
     public int add(Case1 cas){
-        Case1Dao case1DaoAdd = new Case1Dao();
-        case1DaoAdd.save(cas);
+        case1Dao.save(cas);
         return cas.getId();
     }
 
+    @GetMapping("/cases/")
+    public List<Case1> list(){
+        return case1Dao.getAll();
+    }
+
+
     @PutMapping("/cases/{id}")
     public int put(@PathVariable int id, Case1 cas){
-        Case1Dao case1DaoUpgrade = new Case1Dao();
-        case1DaoUpgrade.update(id, cas);
+        case1Dao.update(id, cas);
         return id;
     }
 
     @GetMapping("/cases/{id}")
     public ResponseEntity get(@PathVariable int id){
-        Case1Dao daoGet = new Case1Dao();
-        if (daoGet.get(id) != null){
-            return new ResponseEntity(daoGet.get(id), HttpStatus.OK);
+
+        if (case1Dao.get(id) != null){
+            return new ResponseEntity(case1Dao.get(id), HttpStatus.OK);
         }else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -57,13 +56,11 @@ public class ListController {
 
     @DeleteMapping("/cases/{id}")
     public void deleteCase(@PathVariable int id){
-        Case1Dao daoDelete = new Case1Dao();
-        daoDelete.delete(id);
+        case1Dao.delete(id);
     }
 
     @DeleteMapping("/cases/")
     public void deleteAllCases(){
-        Case1Dao daoDelete = new Case1Dao();
-        daoDelete.deleteAll();
+        case1Dao.deleteAll();
     }
 }

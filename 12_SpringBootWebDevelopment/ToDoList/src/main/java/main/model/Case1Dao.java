@@ -41,10 +41,7 @@ public class Case1Dao implements Dao{
 
     @Override
     public int save(Case1 cas) {
-        Case1 newCase = new Case1();
-        newCase.setDate(cas.getDate());
-        newCase.setName(cas.getName());
-        Case1 i = caseRepository.save(newCase);
+        Case1 i = caseRepository.save(cas);
         return i.getId();
     }
 
@@ -53,6 +50,8 @@ public class Case1Dao implements Dao{
         Optional<Case1> newCase = caseRepository.findById(id);
         newCase.get().setName(cas.getName());
         newCase.get().setDate(cas.getDate());
+        newCase.get().setId(cas.getId());
+        caseRepository.save(newCase.get());
     }
 
     @Override
