@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Новое дело</title>
+</head>
+<body>
+<div id="todo-form">
+    <form th:method="POST" th:acrion="@{/cases}" th:object="${case}">
+        <label for="name">Название дела: </label>
+        <input type="text" th:field="*{name}" id="name" />
+        <label for="date">Дата: </label>
+        <input type="text" th:field="*{date}" id="date" />
+        <p><input type="submit" value="Сохранить" />
+    </form>
+</div>
+</body>
+</html>

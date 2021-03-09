@@ -1,13 +1,7 @@
 package main.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +34,8 @@ public class Case1Dao implements Dao{
     }
 
     @Override
-    public int save(Case1 cas) {
-        Case1 i = caseRepository.save(cas);
-        return i.getId();
+    public void save(Case1 cas) {
+        caseRepository.save(cas);
     }
 
     @Override

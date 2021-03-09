@@ -11,7 +11,7 @@ public interface Dao {
 
     List<Case1> getAll();
 
-    int save(Case1 cas);
+    void save(Case1 cas);
 
     void update(int id ,Case1 cas);
 

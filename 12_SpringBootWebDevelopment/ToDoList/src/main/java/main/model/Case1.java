@@ -1,25 +1,24 @@
 package main.model;
 
-import org.hibernate.annotations.Table;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import javax.persistence.*;
 
 @Entity
-
+@Table(name = "todolist")
 public class Case1 {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "date")
     private String date;
+
+    public Case1(){
+
+    }
 
     public int getId() {
         return id;
