@@ -25,6 +25,7 @@ public class ListController {
         this.case1Dao = case1Dao;
     }
 
+    // Возвращает ссылку "localhost:8080/index" и передает в эту ссылку весь репозиторий с пометкой cases. В этой странице мы можем вывести по этому ключу весь репозиторий
     @GetMapping("/cases/")
     public String list(Model model){
         model.addAttribute("cases", case1Dao.getAll());
@@ -43,11 +44,14 @@ public class ListController {
         }
     }
 
+    //При переходе на ссылку "localhost:808/cases/new" метод создает Model Case1 и направляет пользователя на форму с этой же ссылкой.
     @GetMapping("/cases/new")
     public String newCase(@ModelAttribute("case") Case1 cas){
         return "cases/new";
     }
 
+    // При получении метода отправки POST он обращается к case1Dao.save, и перенаправляет пользователя на ссылку "localhost:808/cases" которая обращается к методу
+    // @GetMapping("/cases/") который в свою очеред возвращает пользователю ссылку "index"
     @PostMapping("/cases/")
     public String add(@ModelAttribute("case") Case1 cas){
         case1Dao.save(cas);
