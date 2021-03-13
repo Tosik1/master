@@ -63,7 +63,7 @@ public class ListController {
 
     @PostMapping("/update")
     public String updateCase(@ModelAttribute("case") Case1 cas){
-        case1Dao.save(cas);
+        case1Dao.update(cas.getId(), cas);
         return "redirect:/cases";
     }
 
