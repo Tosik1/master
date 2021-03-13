@@ -35,14 +35,9 @@ public class ListController {
 
     //ПОлучим 1 дело по его id из DAO и передадим это дело на отображение в представление
     @GetMapping("/cases/{id}")
-    public ResponseEntity get(@PathVariable int id, Model model){
-
-        if (case1Dao.get(id) != null){
-            model.addAttribute("/cases/case", case1Dao.get(id));
-            return new ResponseEntity("cases/case", HttpStatus.OK);
-        }else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+    public String get(@PathVariable int id, Model model){
+            model.addAttribute("case", case1Dao.get(id));
+            return "case.html";
     }
 
     //При переходе на ссылку "localhost:808/cases/new" метод создает Model Case1 и направляет пользователя на форму с этой же ссылкой.
@@ -56,25 +51,33 @@ public class ListController {
     @PostMapping("/cases/new")
     public String add(@ModelAttribute("case") Case1 cas){
         case1Dao.save(cas);
-        System.out.println(cas.getId());
         return "redirect:/cases";
     }
 
-    @PutMapping("/cases/{id}")
-    public int put(@PathVariable int id, Case1 cas){
-        case1Dao.update(id, cas);
-        return id;
+    @GetMapping("/update/{id}")
+    public String updateCaseForm(@PathVariable("id") int id, Model model){
+        Case1 cas = case1Dao.get(id);
+        model.addAttribute("case", cas);
+        return "/update.html";
+    }
+
+    @PostMapping("/update")
+    public String updateCase(@ModelAttribute("case") Case1 cas){
+        case1Dao.save(cas);
+        return "redirect:/cases";
     }
 
 
 
-    @DeleteMapping("/cases/{id}")
-    public void deleteCase(@PathVariable int id){
+    @GetMapping("/case-delete/{id}")
+    public String deleteCase(@PathVariable("id") int id){
         case1Dao.delete(id);
+        return "redirect:/cases";
     }
 
-    @DeleteMapping("/cases/")
-    public void deleteAllCases(){
+    @GetMapping("case-deleteAll")
+    public String deleteAllCases(){
         case1Dao.deleteAll();
+        return "redirect:/cases";
     }
 }
