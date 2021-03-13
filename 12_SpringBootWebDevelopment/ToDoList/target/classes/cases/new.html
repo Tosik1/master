@@ -6,7 +6,7 @@
 </head>
 <body>
 <div id="todo-form">
-    <form th:method="POST" th:acrion="@{/cases}" th:object="${case}">
+    <form th:method="POST" th:action="@{/cases/new}" th:object="${case}">
         <label for="name">Название дела: </label>
         <input type="text" th:field="*{name}" id="name" />
         <label for="date">Дата: </label>

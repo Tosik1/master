@@ -9,13 +9,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import main.model.Case1;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class ListController {
 
     private final Case1Dao case1Dao;
@@ -26,10 +27,10 @@ public class ListController {
     }
 
     // Возвращает ссылку "localhost:8080/index" и передает в эту ссылку весь репозиторий с пометкой cases. В этой странице мы можем вывести по этому ключу весь репозиторий
-    @GetMapping("/cases/")
+    @RequestMapping("/cases")
     public String list(Model model){
         model.addAttribute("cases", case1Dao.getAll());
-        return "index";
+        return "index.html";
     }
 
     //ПОлучим 1 дело по его id из DAO и передадим это дело на отображение в представление
@@ -45,16 +46,17 @@ public class ListController {
     }
 
     //При переходе на ссылку "localhost:808/cases/new" метод создает Model Case1 и направляет пользователя на форму с этой же ссылкой.
-    @GetMapping("/cases/new")
+    @GetMapping("cases/new")
     public String newCase(@ModelAttribute("case") Case1 cas){
-        return "cases/new";
+        return "new.html";
     }
 
     // При получении метода отправки POST он обращается к case1Dao.save, и перенаправляет пользователя на ссылку "localhost:808/cases" которая обращается к методу
     // @GetMapping("/cases/") который в свою очеред возвращает пользователю ссылку "index"
-    @PostMapping("/cases/")
+    @PostMapping("/cases/new")
     public String add(@ModelAttribute("case") Case1 cas){
         case1Dao.save(cas);
+        System.out.println(cas.getId());
         return "redirect:/cases";
     }
 

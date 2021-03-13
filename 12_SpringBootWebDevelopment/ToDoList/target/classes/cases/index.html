@@ -9,7 +9,9 @@
 <body>
     <h1>Список дел</h1>
 <div th:each="case : ${cases}">
-    <a th:href="@{/cases/{id}(id=${case.getId()})}" class="case-link" th:attr="data-id=${case.id}" th:text="${case.getName()}}">case</a>
+    <a th:href="@{/cases/{id}(id=${case.getId()})}" class="case-link" th:attr="data-id=${case.id}" th:text="${case.getName()}">case</a>
 </div>
+
+    <a th:href="@{/cases/new}">Добавить дело</a>
 </body>
 </html>
