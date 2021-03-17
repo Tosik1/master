@@ -13,7 +13,7 @@ public interface Dao {
 
     void save(Case1 cas);
 
-    void update(int id ,Case1 cas);
+    void update(Case1 cas);
 
     void delete(int id);
 

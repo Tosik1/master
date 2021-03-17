@@ -39,12 +39,14 @@ public class Case1Dao implements Dao{
     }
 
     @Override
-    public void update(int id, Case1 cas) {
-        Optional<Case1> newCase = caseRepository.findById(id);
-        newCase.get().setName(cas.getName());
-        newCase.get().setDate(cas.getDate());
-        newCase.get().setId(cas.getId());
-        caseRepository.save(newCase.get());
+    public void update(Case1 cas) {
+        Optional<Case1> newCase = caseRepository.findById(cas.getId() + 1);
+//        if (newCase.isPresent()) {
+            Case1 item = newCase.get();
+            item.setName(cas.getName());
+            item.setDate(cas.getDate());
+            caseRepository.save(item);
+//        }
     }
 
     @Override

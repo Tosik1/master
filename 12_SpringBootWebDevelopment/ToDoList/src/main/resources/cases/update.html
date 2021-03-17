@@ -5,7 +5,7 @@
     <title>Изменить дело</title>
 </head>
 <body>
-    <form th:method="POST" th:action="@{/update}" th:object="${case}">
+    <form th:method="PUT" th:action="@{/update}" th:object="${case}">
         <p th:text="${case.getId()}">id</p>
         <label for="name">Название дела: </label>
         <input type="text" th:field="*{name}" id="name" />

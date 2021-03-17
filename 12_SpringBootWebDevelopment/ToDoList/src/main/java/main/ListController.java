@@ -61,9 +61,9 @@ public class ListController {
         return "/update.html";
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public String updateCase(@ModelAttribute("case") Case1 cas){
-        case1Dao.update(cas.getId(), cas);
+        case1Dao.update(cas);
         return "redirect:/cases";
     }
 
