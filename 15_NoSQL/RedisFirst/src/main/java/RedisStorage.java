@@ -61,12 +61,12 @@ public class RedisStorage {
     // Удаляет
     void deleteOldEntries()
     {
-        logPageVisit(onlineUsers.firstScore());
-        onlineUsers.remove(onlineUsers.first());
+        logPageVisit(Double.parseDouble(onlineUsers.first()));
+        onlineUsers.remove(onlineUsers.firstScore());
     }
     String calculateUsersNumber()
     {
         //ZCOUNT ONLINE_USERS
-        return onlineUsers.takeFirst();
+        return onlineUsers.first();
     }
 }

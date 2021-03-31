@@ -15,7 +15,7 @@ public class RedisTest {
     private static final SimpleDateFormat DF = new SimpleDateFormat("HH:mm:ss");
 
     private static void log(String UsersOnline) {
-        String log = String.format("[%s] Пользователей онлайн: %d", DF.format(new Date()), UsersOnline);
+        String log = String.format(DF.format(new Date()) + " на главной: " + UsersOnline);
         out.println(log);
     }
 
@@ -23,14 +23,14 @@ public class RedisTest {
 
         RedisStorage redis = new RedisStorage();
         redis.init();
-        for(int count = 0; count <= 20; count++) {
+        for(int count = 1; count <= 20; count++) {
             redis.logPageVisit(count);
-            Thread.sleep(SLEEP);
         }
         for(;;) {
             String usersOnline = redis.calculateUsersNumber();
             log(usersOnline);
             redis.deleteOldEntries();
+            Thread.sleep(SLEEP);
         }
     }
 }
