@@ -17,6 +17,7 @@ public class RedisStorage {
     // Объект для работы с ключами
     private RKeys rKeys;
 
+    // ЭТО SCORE
     private int count = 0;
 
     // Объект для работы с Sorted Set'ом
@@ -24,7 +25,6 @@ public class RedisStorage {
 
     private final static String KEY = "ONLINE_USERS";
 
-    // Пример вывода всех ключей
     public void listKeys() {
         Iterable<String> keys = rKeys.getKeys();
         for(String key: keys) {
@@ -32,7 +32,7 @@ public class RedisStorage {
         }
     }
 
-    void init() {
+    void init(RedisStorage redis, int COUNT_USERS) {
         Config config = new Config();
         config.useSingleServer().setAddress("redis://127.0.0.1:6379");
         try {
@@ -44,29 +44,39 @@ public class RedisStorage {
         rKeys = redisson.getKeys();
         onlineUsers = redisson.getScoredSortedSet(KEY);
         rKeys.delete(KEY);
+
+        for(int count = 1; count <= COUNT_USERS; count++) {
+            redis.logPageVisit(count);
+        }
     }
 
     void shutdown() {
         redisson.shutdown();
     }
 
-    // Фиксирует посещение пользователем страницы
     void logPageVisit(double user_id)
     {
-        //ZADD ONLINE_USERS
         onlineUsers.add(count, String.valueOf(user_id));
         count++;
     }
 
-    // Удаляет
     void deleteOldEntries()
     {
         logPageVisit(Double.parseDouble(onlineUsers.first()));
         onlineUsers.remove(onlineUsers.firstScore());
     }
+
+    String randomSystem(int i){
+        return onlineUsers.valueRange(i, i).toString();
+    }
+
+    void randomSystemRemove(int i){
+        logPageVisit(i);
+        onlineUsers.removeRangeByRank(i, i);
+    }
+
     String calculateUsersNumber()
     {
-        //ZCOUNT ONLINE_USERS
         return onlineUsers.first();
     }
 }
