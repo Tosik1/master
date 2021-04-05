@@ -32,7 +32,12 @@ public class RedisStorage {
         }
     }
 
-    void init(RedisStorage redis, int COUNT_USERS) {
+    public RScoredSortedSet<String> getOnlineUsers() {
+        return onlineUsers;
+    }
+
+
+    void init(int COUNT_USERS) {
         Config config = new Config();
         config.useSingleServer().setAddress("redis://127.0.0.1:6379");
         try {
@@ -44,9 +49,19 @@ public class RedisStorage {
         rKeys = redisson.getKeys();
         onlineUsers = redisson.getScoredSortedSet(KEY);
         rKeys.delete(KEY);
+    }
 
-        for(int count = 1; count <= COUNT_USERS; count++) {
-            redis.logPageVisit(count);
+    String[] generRandUser(int COUNT_USERS){
+        double randU1 = Math.random() * COUNT_USERS;
+        int randomU1 = (int) Math.round(randU1);
+        String[] rand = new String[1];
+        rand[0] = String.valueOf(randomU1);
+        return rand;
+    }
+
+    void generUsers(RedisStorage redis, int COUNT_USERS){
+        for(int count = 0; count < COUNT_USERS; count++) {
+            redis.addUserOnTurn(count);
         }
     }
 
@@ -54,7 +69,7 @@ public class RedisStorage {
         redisson.shutdown();
     }
 
-    void logPageVisit(double user_id)
+    void addUserOnTurn(int user_id)
     {
         onlineUsers.add(count, String.valueOf(user_id));
         count++;
@@ -62,7 +77,7 @@ public class RedisStorage {
 
     void deleteOldEntries()
     {
-        logPageVisit(Double.parseDouble(onlineUsers.first()));
+        addUserOnTurn(Integer.parseInt(onlineUsers.first()));
         onlineUsers.remove(onlineUsers.firstScore());
     }
 
@@ -70,13 +85,14 @@ public class RedisStorage {
         return onlineUsers.valueRange(i, i).toString();
     }
 
-    void randomSystemRemove(int i){
-        logPageVisit(i);
-        onlineUsers.removeRangeByRank(i, i);
+    void randomSystemRemove(String i){
+        onlineUsers.remove(i);
     }
 
-    String calculateUsersNumber()
+    String showFirstVal()
     {
-        return onlineUsers.first();
+        String first = onlineUsers.first();
+        randomSystemRemove(first);
+        return first;
     }
 }

@@ -10,9 +10,9 @@ public class RedisTest {
     // docker run --rm --name skill-redis -p 127.0.0.1:6379:6379/tcp -d redis
 
     // Также мы добавим задержку между посещениями
-    private static final int SLEEP = 1000; // 1 миллисекунда
+    private static final int SLEEP = 1000;
 
-    private static final int COUNT_USERS = 20;
+    private static final int COUNT_USERS = 6;
 
     private static final SimpleDateFormat DF = new SimpleDateFormat("HH:mm:ss");
 
@@ -30,29 +30,36 @@ public class RedisTest {
     public static void main(String[] args) throws InterruptedException {
 
         RedisStorage redis = new RedisStorage();
-        redis.init(redis, COUNT_USERS);
+        redis.init(COUNT_USERS);
 
         for(;;) {
-            double randT1 = Math.random() * COUNT_USERS;
-            int randomT1 = (int) Math.round(randT1);
-
-            double randU1 = Math.random() * COUNT_USERS;
-            int randomU1 = (int) Math.round(randU1);
-
-            for (int i = 1; i <= COUNT_USERS; i++) {
-                if (i == randomT1){
-                    String usersOnline = redis.randomSystem(randomU1);
-                    log1(usersOnline);
-                    redis.randomSystemRemove(randomU1);
+                if (redis.getOnlineUsers().isEmpty()){
+                    redis.generUsers(redis, COUNT_USERS);
+                }
+                String[] randUser = redis.generRandUser(COUNT_USERS);
+                for (String rand : randUser) {
+                    out.println(" > Пользователь " + rand + " оплатил платную услугу");
+                    out.println(" - На главной странице показываем " + rand);
+                    redis.randomSystemRemove(rand);
                     Thread.sleep(SLEEP);
                 }
-                else {
-                    String usersOnline = redis.calculateUsersNumber();
-                    log(usersOnline);
-                    redis.deleteOldEntries();
+                for (int i = 0; i < COUNT_USERS - 1; i++) {
+                    String userName = redis.showFirstVal();
+                    out.println(" - На главной странице показываем " + userName);
                     Thread.sleep(SLEEP);
                 }
-            }
+//                {
+//                    String usersOnline = redis.randomSystem(randomU1);
+//                    log1(usersOnline);
+//                    redis.randomSystemRemove(redis, randomU1);
+//                    Thread.sleep(SLEEP);
+//                }
+//                else {
+//                    String usersOnline = redis.showFirstVal();
+//                    log(usersOnline);
+//                    redis.deleteOldEntries();
+//                    Thread.sleep(SLEEP);
+//                }
         }
     }
 }
