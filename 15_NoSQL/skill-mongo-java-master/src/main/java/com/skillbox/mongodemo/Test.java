@@ -1,8 +1,10 @@
 package com.skillbox.mongodemo;
 
-import com.mongodb.MongoClient;
+import com.mongodb.*;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import org.bson.BasicBSONObject;
 import org.bson.BsonDocument;
 import org.bson.Document;
 
@@ -10,6 +12,8 @@ import org.bson.Document;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class Test {
 
@@ -47,16 +51,19 @@ public class Test {
             collection.insertOne(doc);
         }
 
-// общее количество студентов в базе.
-// количество студентов старше 40 лет.
-// имя самого молодого студента.
-// список курсов самого старого студента.
-
-        // Используем JSON-синтаксис для написания запроса (выводим общее количество студентов)
+        // выводим общее количество студентов
         System.out.println(collection.countDocuments());
 
-        // Используем JSON-синтаксис для написания запроса (выбираем документы с Type=2)
-        BsonDocument query = BsonDocument.parse("{ age: { $gte: 40 } }");
-        collection.find(query).?????;
+        // количество студентов старше 40
+        MongoCollection<Document> gt40 = database.getCollection("gt40");
+        BsonDocument query = BsonDocument.parse("{ name: { $gte: 40 } }");
+        collection.find(new Document("age", new Document("$gte", "40"))).forEach((Consumer<Document>) doc -> gt40.insertOne(doc));
+        System.out.println(gt40.countDocuments());
+
+        // имя самого солодого студента
+        collection.find().sort(new BasicDBObject("age", 1)).limit(1).forEach((Consumer<Document>) doc -> System.out.println(doc.get("name")));
+
+        // список курсов самого старого студента
+        collection.find().sort(new BasicDBObject("age", -1)).limit(1).forEach((Consumer<Document>) doc -> System.out.println(doc.get("courses")));
     }
 }
