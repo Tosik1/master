@@ -56,7 +56,7 @@ public class Test {
                 }
 
                 else if (words[0].equals("ДОБАВИТЬ_ТОВАР") || words[0].equals("добавить_товар")){
-                    mongodb.addProduct(words, products);
+                    mongodb.addProduct(command, products, words[0]);
                 }
 
 //                ВЫСТАВИТЬ_ТОВАР Вафли Девяточка
@@ -65,7 +65,7 @@ public class Test {
                 }
 
                 else if (words[0].equals("СТАТИСТИКА_ТОВАРОВ") || words[0].equals("статистика_товаров")){
-
+                    mongodb.productStatistics(shops, products);
                 }
 
                 else {
