@@ -62,6 +62,7 @@ public class Test {
 //                ВЫСТАВИТЬ_ТОВАР Вафли Девяточка
                 else if (words[0].equals("ВЫСТАВИТЬ_ТОВАР") || words[0].equals("выставить_товар")){
                     mongodb.addProductInShop(words, shops, products);
+                    System.out.println(products.getNamespace().getCollectionName());
                 }
 
                 else if (words[0].equals("СТАТИСТИКА_ТОВАРОВ") || words[0].equals("статистика_товаров")){

@@ -47,9 +47,9 @@ public class mongodb {
                         Accumulators.avg("AvgPrice", "$products.price"),
                         Accumulators.max("MaxPrice", "$products.price"),
                         Accumulators.min("MinPrice", "$products.price"),
-                        Accumulators.sum("lessThen100", new Document("products.price", new Document("$lte", 100)))
+                        Accumulators.sum("lessThen100", Document.parse("{ \"$cond\": [ { \"$lt\": [ \"$products.price\", 100 ] }, 1, 0 ] }")))
                 )
-        ));
+        );
         for (Document doc : productPriceStatistics){
             System.out.println(doc.toJson());
         }
