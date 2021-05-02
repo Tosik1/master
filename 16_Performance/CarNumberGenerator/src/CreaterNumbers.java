@@ -25,23 +25,26 @@ public class CreaterNumbers extends Thread {
 
         for (int number = 1; number < 1000; number++) {
             StringBuffer builder = new StringBuffer();
+            String number1 = padNumber(number, 3);
             for (int regionCode = 1; regionCode < 100; regionCode++) {
+                String regionCod = padNumber(regionCode, 2);
                 for (char secondLetter : letters) {
                     for (char thirdLetter : letters) {
                         builder.append(firstLetter);
-                        builder.append(padNumber(number, 3));
+                        builder.append(number1);
                         builder.append(secondLetter);
                         builder.append(thirdLetter);
-                        builder.append(padNumber(regionCode, 2));
+                        builder.append(regionCod);
                         builder.append("\n");
                     }
                 }
+
             }
             writer.write(builder.toString());
         }
         writer.flush();
         writer.close();
-        System.out.println((System.currentTimeMillis() - start) + " ms");
+        System.out.println(Thread.currentThread().getName() + " -> " + (System.currentTimeMillis() - start) + " ms");
     }
 
     private static String padNumber(int number, int numberLength) {
