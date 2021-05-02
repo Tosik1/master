@@ -12,7 +12,7 @@ public class Loader {
         ArrayList<Thread> threads = new ArrayList();
 
         for (char firstLetter : letters) {
-                Thread createNumbers = new CreaterNumbers(firstLetter, letters, start);
+                Thread createNumbers = new CreaterNumbers(firstLetter, letters);
                 createNumbers.start();
                 threads.add(createNumbers);
         }

@@ -8,10 +8,9 @@ public class CreaterNumbers extends Thread {
     private long start;
 
 
-    public CreaterNumbers(char firstLetter, char[] letters, long start){
+    public CreaterNumbers(char firstLetter, char[] letters){
         this.firstLetter = firstLetter;
         this.letters = letters;
-        this.start = start;
     }
 
     @Override
@@ -44,7 +43,7 @@ public class CreaterNumbers extends Thread {
         }
         writer.flush();
         writer.close();
-        System.out.println(Thread.currentThread().getName() + " -> " + (System.currentTimeMillis() - start) + " ms");
+        System.out.println(Thread.currentThread().getName());
     }
 
     private static String padNumber(int number, int numberLength) {
