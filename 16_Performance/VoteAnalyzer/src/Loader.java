@@ -2,9 +2,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,24 +21,41 @@ public class Loader {
     private static HashMap<Voter, Integer> voterCounts = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
-        String fileName = "res/data-1M.xml";
+        String fileName = "res/data-18M.xml";
 
-        parseFile(fileName);
+        long usage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 
-        //Printing results
-        System.out.println("Voting station work times: ");
-        for (Integer votingStation : voteStationWorkTimes.keySet()) {
-            WorkTime workTime = voteStationWorkTimes.get(votingStation);
-            System.out.println("\t" + votingStation + " - " + workTime);
-        }
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        SAXParser parser = factory.newSAXParser();
+        XMLHandler handler = new XMLHandler();
+        parser.parse(new File(fileName), handler);
+        handler.printDuplicatedVoters();
 
-        System.out.println("Duplicated voters: ");
-        for (Voter voter : voterCounts.keySet()) {
-            Integer count = voterCounts.get(voter);
-            if (count > 1) {
-                System.out.println("\t" + voter + " - " + count);
+        usage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory() - usage;
+        System.out.println("XMLParser - " + usage);
+
+
+
+        usage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+            parseFile(fileName);
+
+            //Printing results
+//            System.out.println("Voting station work times: ");
+//            for (Integer votingStation : voteStationWorkTimes.keySet()) {
+//                WorkTime workTime = voteStationWorkTimes.get(votingStation);
+//                System.out.println("\t" + votingStation + " - " + workTime);
+//            }
+
+            System.out.println("Duplicated voters: ");
+            for (Voter voter : voterCounts.keySet()) {
+                int count = voterCounts.get(voter);
+                if (count > 1) {
+                    System.out.println("\t" + voter + " - " + count);
+                }
             }
-        }
+
+        usage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory() - usage;
+        System.out.println("DOMParser - " + usage);
     }
 
     private static void parseFile(String fileName) throws Exception {
@@ -56,8 +75,8 @@ public class Loader {
             NamedNodeMap attributes = node.getAttributes();
 
             String name = attributes.getNamedItem("name").getNodeValue();
-            Date birthDay = birthDayFormat
-                .parse(attributes.getNamedItem("birthDay").getNodeValue());
+            long birthDay = birthDayFormat
+                .parse(attributes.getNamedItem("birthDay").getNodeValue()).getTime();
 
             Voter voter = new Voter(name, birthDay);
             Integer count = voterCounts.get(voter);
