@@ -10,6 +10,7 @@ public class DBConnection {
 
     private static StringBuilder insertQuery = new StringBuilder();
     private static int count = 0;
+    private static int count1 = 0;
     private long start = System.currentTimeMillis();
 
     public static Connection getConnection() {
@@ -42,7 +43,6 @@ public class DBConnection {
     public static void countVoter(String name, String birthDay) throws SQLException {
         birthDay = birthDay.replace('.', '-');
         if (count >= 80000) {
-            int count1 = 0;
             count1 += count;
             System.out.println("Количество записей отправленных в бд : " + count1);
             count = 0;
