@@ -25,7 +25,7 @@ public class Loader {
         SAXParser parser = factory.newSAXParser();
         XMLHandler handler = new XMLHandler();
         parser.parse(new File(fileName), handler);
-        DBConnection.executeMultiInsert();
+//        DBConnection.executeMultiInsert();
 
         System.out.println(System.currentTimeMillis() - start);
 

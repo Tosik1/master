@@ -9,6 +9,8 @@ public class DBConnection {
     private static String dbPass = "Qazwsx12344321";
 
     private static StringBuilder insertQuery = new StringBuilder();
+    private static int count = 0;
+    private long start = System.currentTimeMillis();
 
     public static Connection getConnection() {
         if (connection == null) {
@@ -37,10 +39,22 @@ public class DBConnection {
         DBConnection.getConnection().createStatement().execute(sql);
     }
 
-    public static void countVoter(String name, String birthDay){
+    public static void countVoter(String name, String birthDay) throws SQLException {
         birthDay = birthDay.replace('.', '-');
+        if (count >= 80000) {
+            int count1 = 0;
+            count1 += count;
+            System.out.println("Количество записей отправленных в бд : " + count1);
+            count = 0;
 
+            long start = System.currentTimeMillis();
+            executeMultiInsert();
+            System.out.println("Время, потраченное на запись пакета в бд : " + (System.currentTimeMillis() - start) + "мс");
+
+            insertQuery = new StringBuilder();
+        }
         insertQuery.append((insertQuery.length() == 0 ? "" : ",") + "('" + name + "', '" + birthDay + "', 1)");
+        count++;
     }
 
     public static void printVoterCounts() throws SQLException {

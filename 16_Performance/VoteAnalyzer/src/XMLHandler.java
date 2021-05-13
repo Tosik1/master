@@ -2,6 +2,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.sql.SQLException;
+
 public class XMLHandler extends DefaultHandler {
 
     public XMLHandler(){
@@ -20,6 +22,6 @@ public class XMLHandler extends DefaultHandler {
     }
 
     @Override
-    public void endElement(String uri, String localName, String qName) throws SAXException {
+    public void endElement(String uri, String localName, String qName){
     }
 }
