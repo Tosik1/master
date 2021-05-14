@@ -25,11 +25,9 @@ public class Loader {
         SAXParser parser = factory.newSAXParser();
         XMLHandler handler = new XMLHandler();
         parser.parse(new File(fileName), handler);
-//        DBConnection.executeMultiInsert();
-
-        System.out.println(System.currentTimeMillis() - start);
 
         DBConnection.printVoterCounts();
+        System.out.println((System.currentTimeMillis() - start) + " мс - время потраченное на запись всех данных в БД и подсчет мошенников");
     }
 
     private static void parseFile(String fileName) throws Exception {

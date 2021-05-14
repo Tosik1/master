@@ -7,6 +7,7 @@ public class DBConnection {
     private static String dbName = "learn";
     private static String dbUser = "root";
     private static String dbPass = "Qazwsx12344321";
+    private static final int MAX_VALUE = 80000;
 
     private static StringBuilder insertQuery = new StringBuilder();
     private static int count = 0;
@@ -25,8 +26,8 @@ public class DBConnection {
                     "name TINYTEXT NOT NULL, " +
                     "birthDate DATE NOT NULL, " +
                     "`count` INT NOT NULL, " +
-                    "PRIMARY KEY(id), " +
-                    "UNIQUE KEY name_date(name(50), birthDate))");
+                    "PRIMARY KEY(id))");
+//                    "UNIQUE KEY name_date(id))");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -35,14 +36,13 @@ public class DBConnection {
     }
 
     public static void executeMultiInsert() throws SQLException {
-        String sql = "INSERT INTO voter_count(name, birthDate, `count`) " + "VALUES" + insertQuery.toString() +
-                "ON DUPLICATE KEY UPDATE `count`=`count` + 1";
+        String sql = "INSERT INTO voter_count(name, birthDate, `count`) VALUES" + insertQuery.toString();
+//                "ON DUPLICATE KEY UPDATE `count`=`count` + 1";
         DBConnection.getConnection().createStatement().execute(sql);
     }
 
     public static void countVoter(String name, String birthDay) throws SQLException {
-        birthDay = birthDay.replace('.', '-');
-        if (count >= 80000) {
+        if (count >= MAX_VALUE) {
             count1 += count;
             System.out.println("Количество записей отправленных в бд : " + count1);
             count = 0;
@@ -58,8 +58,17 @@ public class DBConnection {
     }
 
     public static void printVoterCounts() throws SQLException {
-        String sql = "SELECT name, birthDate, `count` FROM voter_count WHERE `count` > 1";
-        ResultSet rs = DBConnection.getConnection().createStatement().executeQuery(sql);
+        if (insertQuery.length() > 0){
+            count1 += count;
+            System.out.println("Количество записей отправленных в бд : " + count1);
+            count = 0;
+
+            long start = System.currentTimeMillis();
+            executeMultiInsert();
+            System.out.println("Время, потраченное на запись пакета в бд : " + (System.currentTimeMillis() - start) + "мс");
+        }
+        String sql1 = "SELECT `name`, `birthDate`, COUNT(`name`) AS `count` FROM `voter_count` GROUP BY `name` HAVING `count` > 1";
+        ResultSet rs = DBConnection.getConnection().createStatement().executeQuery(sql1);
         while (rs.next()) {
             System.out.println("\t" + rs.getString("name") + " (" +
                 rs.getString("birthDate") + ") - " + rs.getInt("count"));
