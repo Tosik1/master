@@ -10,7 +10,7 @@ public class DBConnection {
     private static final int MAX_VALUE_PACKAGE = 50_000;
 
     private static StringBuilder insertQuery = new StringBuilder();
-    private static int count_voters = 0;
+    private static int countVoters = 0;
     private long start = System.currentTimeMillis();
 
     public static Connection getConnection() {
@@ -43,9 +43,9 @@ public class DBConnection {
     public static void countVoter(String name, String birthDay) throws SQLException {
 //        insertQuery.append((insertQuery.length() == 0 ? "" : ",") + "('" + name + "', '" + birthDay + "', 1)");
         insertQuery.append(insertQuery.length() == 0 ? "" : ",").append(String.format("('%s', '%s', 1)", name, birthDay));
-        count_voters++;
-        if (count_voters % MAX_VALUE_PACKAGE == 0) {
-            System.out.println("Количество записей отправленных в бд : " + count_voters);
+        countVoters++;
+        if (countVoters % MAX_VALUE_PACKAGE == 0) {
+            System.out.println("Количество записей отправленных в бд : " + countVoters);
 
             long start = System.currentTimeMillis();
             executeMultiInsert();
@@ -58,7 +58,7 @@ public class DBConnection {
 
     public static void printVoterCounts() throws SQLException {
         if (insertQuery.length() > 0){
-            System.out.println("Количество записей отправленных в бд : " + count_voters);
+            System.out.println("Количество записей отправленных в бд : " + countVoters);
 
             long start = System.currentTimeMillis();
             executeMultiInsert();
