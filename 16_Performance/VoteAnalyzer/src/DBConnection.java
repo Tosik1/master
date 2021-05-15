@@ -7,11 +7,10 @@ public class DBConnection {
     private static String dbName = "learn";
     private static String dbUser = "root";
     private static String dbPass = "Qazwsx12344321";
-    private static final int MAX_VALUE = 80000;
+    private static final int MAX_VALUE_PACKAGE = 50_000;
 
     private static StringBuilder insertQuery = new StringBuilder();
-    private static int count = 0;
-    private static int count1 = 0;
+    private static int count_voters = 0;
     private long start = System.currentTimeMillis();
 
     public static Connection getConnection() {
@@ -42,10 +41,11 @@ public class DBConnection {
     }
 
     public static void countVoter(String name, String birthDay) throws SQLException {
-        if (count >= MAX_VALUE) {
-            count1 += count;
-            System.out.println("Количество записей отправленных в бд : " + count1);
-            count = 0;
+//        insertQuery.append((insertQuery.length() == 0 ? "" : ",") + "('" + name + "', '" + birthDay + "', 1)");
+        insertQuery.append(insertQuery.length() == 0 ? "" : ",").append(String.format("('%s', '%s', 1)", name, birthDay));
+        count_voters++;
+        if (count_voters % MAX_VALUE_PACKAGE == 0) {
+            System.out.println("Количество записей отправленных в бд : " + count_voters);
 
             long start = System.currentTimeMillis();
             executeMultiInsert();
@@ -53,15 +53,12 @@ public class DBConnection {
 
             insertQuery = new StringBuilder();
         }
-        insertQuery.append((insertQuery.length() == 0 ? "" : ",") + "('" + name + "', '" + birthDay + "', 1)");
-        count++;
+
     }
 
     public static void printVoterCounts() throws SQLException {
         if (insertQuery.length() > 0){
-            count1 += count;
-            System.out.println("Количество записей отправленных в бд : " + count1);
-            count = 0;
+            System.out.println("Количество записей отправленных в бд : " + count_voters);
 
             long start = System.currentTimeMillis();
             executeMultiInsert();
