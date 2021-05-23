@@ -8,17 +8,36 @@ public class BinarySearch
 
     public BinarySearch(ArrayList<String> list)
     {
+        if (list.size() == 0){
+            Exception ex = new Exception("Пустой массив");
+            ex.printStackTrace();
+        } else
         this.list = list;
     }
 
     public int search(String query)
     {
-        return search(query, 0, list.size() - 1);
+        if (list != null) {
+            return search(query, 0, list.size() - 1);
+        } else{
+            Exception ex = new Exception("Нет значений в массиве");
+            ex.printStackTrace();
+            return -1;
+        }
     }
 
     private int search(String query, int from, int to)
     {
-        //TODO: write code here
-        return -1;
+        int middle = (from + to) / 2;
+        int comparsion = query.compareTo(list.get(middle));
+        if (comparsion == 0){
+            return middle;
+        } else if (comparsion > 0){
+            return search(query, middle, to);
+        } else if (comparsion < 0){
+            return search(query, from, middle);
+        } else {
+            return -1;
+        }
     }
 }

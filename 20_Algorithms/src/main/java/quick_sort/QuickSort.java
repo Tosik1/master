@@ -22,9 +22,22 @@ public class QuickSort
 
     private static int partition(int[] array, int from, int to)
     {
-        //TODO: moving values around pivot,
-        // return new pivot index
-        return 0;
+        int firstIndex = array[to];
+        int i = (from - 1);
+
+        for (int j = from; j < to; j++) {
+            if (array[j] <= firstIndex) {
+                i++;
+                int buffer = array[i];
+                array[i] = array[j];
+                array[j] = buffer;
+            }
+        }
+        int buffer = array[i + 1];
+        array[i + 1] = array[to];
+        array[to] = buffer;
+
+        return i + 1;
     }
 
 }
