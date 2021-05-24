@@ -26,18 +26,21 @@ public class BinarySearch
         }
     }
 
-    private int search(String query, int from, int to)
-    {
+    private int search(String query, int from, int to) {
         int middle = (from + to) / 2;
-        int comparsion = query.compareTo(list.get(middle));
-        if (comparsion == 0){
-            return middle;
-        } else if (comparsion > 0){
-            return search(query, middle, to);
-        } else if (comparsion < 0){
-            return search(query, from, middle);
-        } else {
+
+        if (to < from) {
             return -1;
+        }
+
+        int comparsion = query.compareTo(list.get(middle));
+
+        if (comparsion == 0) {
+            return middle;
+        } else if (comparsion < 0) {
+            return search(query, from, middle - 1);
+        } else {
+            return search(query, middle + 1, to);
         }
     }
 }
