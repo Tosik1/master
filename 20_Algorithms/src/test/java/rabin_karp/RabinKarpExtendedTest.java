@@ -17,6 +17,7 @@ class RabinKarpExtendedTest {
         String query = "AFASFASFAS";
         RabinKarpExtended rabin = new RabinKarpExtended(text);
         List<Integer> actual = rabin.search(query);
+
         int index = text.indexOf(query);
         List<Integer> expected = new ArrayList<>();
         for (int i = index; i < index + query.length(); i++) {
