@@ -17,29 +17,6 @@ public class RabinKarpExtended
 
     public List<Integer> search(String query)
     {
-            int position = 1;
-            char[] characters = query.toCharArray();
-            for (int i = 1; i < query.length(); i++) {
-                int j;
-                for (j = 0; j < position; ++j) {
-                    if (characters[i] == characters[j]) {
-                        break;
-                    }
-                }
-                if (j == position) {
-                    characters[position] = characters[i];
-                    ++position;
-                } else {
-                    characters[position] = 0;
-                    ++position;
-                }
-            }
-            if (characters.length > 10) {
-                Exception ex = new Exception("The number of characters is more than 9");
-                ex.printStackTrace();
-            }
-
-
         ArrayList<Integer> indices = new ArrayList<>();
         int queryLength = query.length();
         int firstSymbol = 0;
@@ -60,6 +37,11 @@ public class RabinKarpExtended
 
     private void createIndex()
     {
+        String str = text.replaceAll("(.)(?=.*\\1)", "");
+        if (str.length() > 9) {
+            Exception ex = new Exception("The number of characters is more than 9");
+            ex.printStackTrace();
+        }
 
     }
 }
