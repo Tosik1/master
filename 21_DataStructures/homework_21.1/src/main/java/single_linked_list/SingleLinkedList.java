@@ -1,5 +1,6 @@
 package single_linked_list;
 
+import java.util.List;
 import java.util.Objects;
 
 public class SingleLinkedList {
@@ -28,7 +29,9 @@ public class SingleLinkedList {
     }
 
     public void removeLast() {
-        // TODO: remove last element
+        if (top.getNext().getNext() == null){
+            top.setNext(null);
+        }
     }
 
     @Override

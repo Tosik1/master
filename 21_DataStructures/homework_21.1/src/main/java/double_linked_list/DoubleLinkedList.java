@@ -1,5 +1,6 @@
 package double_linked_list;
 
+import java.util.LinkedList;
 import java.util.Objects;
 
 public class DoubleLinkedList<T> {
@@ -8,29 +9,67 @@ public class DoubleLinkedList<T> {
     private int size;
 
     public ListItem<T> popHeadElement() {
-        // TODO
-        return null;
+        ListItem<T> item = head;
+        if (head != null){
+            head = head.next;
+            item.next = null;
+            size--;
+        }
+        return item;
     }
 
     public ListItem<T> popTailElement() {
-        // TODO
-        return null;
+        ListItem item = tail;
+        if (head != null){
+            tail = tail.prev;
+            item.prev = null;
+            size--;
+        }
+        return item;
     }
 
     public void removeHeadElement() {
-        // TODO
+        if (head != null){
+            head = head.next;
+            size--;
+        }
     }
 
     public void removeTailElement() {
-        // TODO
+        if (head != null){
+            tail = tail.prev;
+            size--;
+        }
     }
 
     public void addToHead(T data) {
-        // TODO
+        if (head == null){
+            head = new ListItem<>(data);
+            tail = head;
+        }
+        else{
+            ListItem item = new ListItem(data);
+            item.prev = null;
+            item.next = head;
+            head.prev = item;
+            head = item;
+        }
+        size++;
     }
 
     public void addToTail(T data) {
-        // TODO
+        if (head == null){
+            head = new ListItem<>(data);
+            tail = head;
+        }
+        else {
+            ListItem item = new ListItem(data);
+            item.prev = tail;
+            item.next = null;
+            tail.next = item;
+            tail = item;
+        }
+        size++;
     }
 
     public int getSize() {
