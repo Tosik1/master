@@ -2,6 +2,7 @@ package binary_tree;
 
 public final class Node {
     private final String data;
+    private Node parent;
     private Node left;
     private Node right;
 
@@ -27,5 +28,13 @@ public final class Node {
 
     public void setRight(Node right) {
         this.right = right;
+    }
+
+    public Node getParent() {
+        return parent;
+    }
+
+    public void setParent(Node left) {
+        this.parent = parent;
     }
 }
