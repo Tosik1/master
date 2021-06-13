@@ -1,9 +1,9 @@
 blog:
-  copyright: Дмитрий Сергеев
+  copyright: Dmitriy Sergeev
   copyrightFrom: 2005
   email: mail@mail.ru
   phone: +7 903 666-44-55
-  subtitle: Рассказы разработчиков
+  subtitle: Developer Stories
   title: DevPub
 spring:
   datasource:
@@ -11,10 +11,13 @@ spring:
     url: jdbc:mysql://localhost:3306/website?serverTimezone=UTC#?allowPublicKeyRetrieval=true&amp;shutdown=true&amp;useSSL=false
     username: root
   jpa:
+    properties:
+      hibernate:
+        format_sql: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: validate
-    show-sql: false
+    show-sql: true
   liquibase:
     change-log: classpath:/data/changelog/db.changelog.master.xml
     enabled: true
