@@ -6,6 +6,7 @@ import com.github.cage.YCage;
 import main.core.api.response.CaptchaResponse;
 import main.core.repository.CaptchaCodesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -31,5 +32,10 @@ public class CaptchaService {
         captchaCodesRepository.putCaptcha(text, String.valueOf(text.hashCode()));
 
         return captchaResponse;
+    }
+
+    @Scheduled(cron = "0 * ?")
+    public void removeOldCaptcha(){
+        captchaCodesRepository.deleteOldCaptcha();
     }
 }
