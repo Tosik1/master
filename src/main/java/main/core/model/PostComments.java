@@ -3,6 +3,7 @@ package main.core.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -10,39 +11,40 @@ import java.util.List;
 public class PostComments {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
 
 
-//    @OneToMany(mappedBy = "parent")
-//    @JsonIgnore
-//    private List<PostComments> childComments;
-//
-//    @ManyToOne
-//    @JsonIgnore
-//    private PostComments parent;
+    @OneToMany(mappedBy = "parent")
+    private List<PostComments> childComments;
 
     @ManyToOne
-    @JsonIgnore
+    private PostComments parent;
+
+    @ManyToOne
+    @NotNull
     private Post post;
 
+    @NotNull
     @OneToOne
     private User user;
 
+    @NotNull
     private Date time;
 
+    @NotNull
     private String text;
 
 
 
-//    public PostComments getParent() {
-//        return parent;
-//    }
-//
-//    public void setParent(PostComments parent) {
-//        this.parent = parent;
-//    }
+    public PostComments getParent() {
+        return parent;
+    }
+
+    public void setParent(PostComments parent) {
+        this.parent = parent;
+    }
 
     public Post getPost() {
         return post;
@@ -51,14 +53,14 @@ public class PostComments {
     public User getUser() {
         return user;
     }
-//
-//    public List<PostComments> getChildComments() {
-//        return childComments;
-//    }
-//
-//    public void setChildComments(List<PostComments> childComments) {
-//        this.childComments = childComments;
-//    }
+
+    public List<PostComments> getChildComments() {
+        return childComments;
+    }
+
+    public void setChildComments(List<PostComments> childComments) {
+        this.childComments = childComments;
+    }
 
     public int getId() {
         return id;
@@ -68,13 +70,13 @@ public class PostComments {
         this.id = id;
     }
 
-//    public int getParentId() {
-//        return parent.getId();
-//    }
-//
-//    public void setParentId(PostComments parent) {
-//        this.parent = parent;
-//    }
+    public int getParentId() {
+        return parent.getId();
+    }
+
+    public void setParentId(PostComments parent) {
+        this.parent = parent;
+    }
 
     public int getPostId() {
         return post.getId();

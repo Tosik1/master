@@ -2,6 +2,7 @@ package main.core.service;
 
 import main.core.api.response.TagResponse;
 import main.core.model.Tags;
+import main.core.model.custom.CustomTags;
 import main.core.repository.PostRepository;
 import main.core.repository.TagsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +30,19 @@ public class TagService {
         double k = 1 / dWeightMax;
 
         if (query.equals("all")){
+            List<CustomTags> allCustomTags = new ArrayList<>();
             for (Tags tags : allTags){
                 tags.setWeight(tags.getTag2Posts().size() * k);
+                CustomTags customTags = new CustomTags(tags.getName(), tags.getWeight());
+                allCustomTags.add(customTags);
             }
-            tagResponse.setTags(allTags);
+            tagResponse.setTags(allCustomTags);
         }
         else {
-            List<Tags> oneTag = new ArrayList();
+            List<CustomTags> oneTag = new ArrayList();
             for (Tags tags : allTags){
                 if (query.equals(tags.getName())){
-                    oneTag.add(tags);
+                    oneTag.add(new CustomTags(tags.getName(), tags.getWeight()));
                 }
             }
             tagResponse.setTags(oneTag);

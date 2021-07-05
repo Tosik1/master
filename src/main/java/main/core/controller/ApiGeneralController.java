@@ -1,13 +1,9 @@
 package main.core.controller;
 
-import main.core.api.response.InitResponse;
-import main.core.api.response.SettingsResponse;
-import main.core.api.response.TagResponse;
+import main.core.api.response.*;
+import main.core.service.CalendarService;
 import main.core.service.TagService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import main.core.service.SettingsService;
 
 @RestController
@@ -16,10 +12,14 @@ public class ApiGeneralController {
 
     private final SettingsService settingsService;
     private final TagService tagService;
+    private final CalendarService calendarService;
+    private final InitResponse initResponse;
 
-    public ApiGeneralController(SettingsService settingsService, TagService tagService) {
+    public ApiGeneralController(SettingsService settingsService, TagService tagService, CalendarService calendarService, InitResponse initResponse) {
         this.settingsService = settingsService;
         this.tagService = tagService;
+        this.calendarService = calendarService;
+        this.initResponse = initResponse;
     }
 
     @GetMapping("/settings")
@@ -29,11 +29,17 @@ public class ApiGeneralController {
 
     @GetMapping("/init")
     private InitResponse init() {
-        return new InitResponse();
+        return initResponse;
     }
 
     @GetMapping("/tag")
     private TagResponse tag(@RequestParam(name = "query", required = false, defaultValue = "all") String query){
         return tagService.getTagResponse(query);
     }
+
+    @GetMapping("/calendar")
+    private CalendarResponse calendar(@RequestParam(name = "year", required = false) String year){
+        return calendarService.getCalendarResponse(year);
+    }
+
 }

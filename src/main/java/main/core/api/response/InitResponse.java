@@ -19,6 +19,9 @@ public class InitResponse {
     @Value("${blog.copyrightFrom}")
     private String copyrightFrom;
 
+    public InitResponse() {
+    }
+
     public String getTitle() {
         return title;
     }

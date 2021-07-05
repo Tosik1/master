@@ -2,8 +2,10 @@ package main.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -11,40 +13,42 @@ import java.util.List;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @JsonIgnore
+
+    @NotNull
     private int isActive;
 
+    @NotNull
     @Enumerated
-    @JsonIgnore
     private ModeratorStatus modStatus;
 
-//    @OneToOne
-//    private User moderator;
+    @OneToOne
+    private User moderator;
 
+    @NotNull
     @ManyToOne
-    private User author;
+    private User user;
 
+    @NotNull
     private Date time;
 
+    @NotNull
     private String title;
 
-    @JsonIgnore
+    @NotNull
     private String text;
 
+    @NotNull
     private int viewCount;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "post")
     private List<PostComments> postComments;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "post")
     private List<PostVotes> postVotes;
 
     @OneToMany(mappedBy = "post")
-    @JsonIgnore
     private List<Tag2Post> listTag2Post;
 
     public List<PostVotes> getPostVotes() {
@@ -64,9 +68,9 @@ public class Post {
     }
 
 
-    //    public User getModerator() {
-//        return moderator;
-//    }
+        public User getModerator() {
+        return moderator;
+    }
 
     public int getLikeCount(){
         int likeCount = 0;
@@ -88,8 +92,14 @@ public class Post {
         return dislikeCount;
     }
 
-    public User getAuthor() {
-        return author;
+    public User getUser() {
+        return user;
+    }
+
+    public int getUserId(){ return user.getId();}
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<PostComments> getPostComments() {
@@ -108,10 +118,6 @@ public class Post {
         this.modStatus = modStatus;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
     public int getId() {
         return id;
     }
@@ -128,24 +134,18 @@ public class Post {
         this.isActive = isActive;
     }
 
-//    public int getModeratorId() {
-//        return moderator.getId();
-//    }
-//
-//    public void setModerator(User moderator) {
-//        this.moderator = moderator;
-//    }
+    public int getModeratorId() {
+        return moderator.getId();
+    }
 
-    @JsonIgnore
-    public int getUserId() {
-        return author.getId();
+    public void setModerator(User moderator) {
+        this.moderator = moderator;
     }
 
     public int getCommentCount(){
         return postComments.size();
     }
 
-    @JsonProperty(value = "timestamp")
     public long getTime() {
         return time.getTime();
     }

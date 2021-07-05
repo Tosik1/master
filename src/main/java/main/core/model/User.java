@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.type.TextType;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -14,24 +15,27 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @JsonIgnore
+
+    @NotNull
     private int isModerator;
 
-    @JsonIgnore
+    @NotNull
     private Date regTime;
 
+    @NotNull
     private String name;
-    @JsonIgnore
+
+    @NotNull
     private String email;
-    @JsonIgnore
+
+    @NotNull
     private String password;
-    @JsonIgnore
+
     private String code;
-    @JsonIgnore
+
     private String photo;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "user")
     private List<Post> userPosts;
 
     public List<Post> getUserPosts() {

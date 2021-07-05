@@ -1,17 +1,20 @@
 package main.core.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Tag2Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotNull
     @ManyToOne
     private Post post;
 
+    @NotNull
     @ManyToOne
     private Tags tag;
 

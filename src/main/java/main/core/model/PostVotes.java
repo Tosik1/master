@@ -1,23 +1,28 @@
 package main.core.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
 public class PostVotes {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotNull
     @OneToOne
     private User user;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
+    @NotNull
     private Date time;
 
+    @NotNull
     private int value;
 
     public int getId() {

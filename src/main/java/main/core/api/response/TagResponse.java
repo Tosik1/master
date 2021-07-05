@@ -1,18 +1,19 @@
 package main.core.api.response;
 
 import main.core.model.Tags;
+import main.core.model.custom.CustomTags;
 
 import java.util.List;
 
 public class TagResponse {
 
-    private List<Tags> tags;
+    private List<CustomTags> tags;
 
-    public List<Tags> getTags() {
+    public List<CustomTags> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tags> tags) {
+    public void setTags(List<CustomTags> tags) {
         this.tags = tags;
     }
 }
