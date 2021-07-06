@@ -20,4 +20,7 @@ public interface CaptchaCodesRepository extends CrudRepository<CaptchaCodes, Int
     @Transactional
     @Query(value = "delete FROM captcha_codes as cc where sysdate() - cc.time > 3600000", nativeQuery = true)
     void deleteOldCaptcha();
+
+    @Query(value = "Select cc.code from captcha_codes as cc where cc.secret_code = ?1", nativeQuery = true)
+    String findCodeBySecretCode(String secretCode);
 }

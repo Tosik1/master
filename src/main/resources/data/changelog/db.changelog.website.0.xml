@@ -33,6 +33,7 @@
             <column name="photo" value="gdetotyt"/>
         </insert>
     </changeSet>
+
     <changeSet id="3" author="admin">
         <insert tableName="post">
             <column name="id" value="1"/>
