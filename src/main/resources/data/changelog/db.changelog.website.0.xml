@@ -24,13 +24,23 @@
     <changeSet id="2" author="admin">
         <insert tableName="users">
             <column name="id" value="1"/>
+            <column name="is_moderator" value="1"/>
+            <column name="reg_time" value="2021.06.11"/>
+            <column name="name" value="qweqwe"/>
+            <column name="email" value="qweqwe@mail.ru"/>
+            <column name="password" value="$2a$12$Ky/nR6Gd2lXVZDe.44ObvODKvZBCpAwFVpgDstOS/0ievcVl2XlBK"/>
+            <column name="code" value="10.01.2010"/>
+            <column name="photo" value="qweqwe"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" value="2"/>
             <column name="is_moderator" value="0"/>
             <column name="reg_time" value="2021.06.11"/>
-            <column name="name" value="alex"/>
-            <column name="email" value="alex0078@mail.ru"/>
-            <column name="password" value="12345"/>
+            <column name="name" value="asdasd"/>
+            <column name="email" value="asdasd@mail.ru"/>
+            <column name="password" value="$2a$12$NZyVC42ZlpyNP2XFHv.QreyomZCQHGer1N53K3gL7dAmqrTWeiwau"/>
             <column name="code" value="10.01.2010"/>
-            <column name="photo" value="gdetotyt"/>
+            <column name="photo" value="asdasd"/>
         </insert>
     </changeSet>
 

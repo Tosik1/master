@@ -21,8 +21,3 @@ spring:
   liquibase:
     change-log: classpath:/data/changelog/db.changelog.master.xml
     enabled: true
-  thymeleaf:
-    prefix: classpath:templates/
-  web:
-    resources:
-      static-locations: classpath:templates/
