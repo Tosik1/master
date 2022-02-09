@@ -1,10 +1,15 @@
 package main.controller;
 
+import main.api.request.PostRequest;
+import main.api.request.UserRequest;
 import main.api.response.ApiPostResponse;
+import main.api.response.NewPostResponse;
 import main.api.response.PostResponse;
 import main.service.PostService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +23,6 @@ public class ApiPostController {
     }
 
     @GetMapping("")
-    @PreAuthorize("hasAuthority('user:write')")
     @ResponseBody
     public ResponseEntity<ApiPostResponse> getPost(
             @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
@@ -27,8 +31,18 @@ public class ApiPostController {
         return postService.getApiPostResponse(offset, limit, mode);
     }
 
+    @PostMapping("")
+    @ResponseBody
+    public ResponseEntity<NewPostResponse> postPost(@Validated @RequestBody PostRequest request){
+        return postService.postNewPost(request.getTimestamp(), request.getActive(), request.getTitle(), request.getTags(), request.getText());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity editPost(@PathVariable int id, @Validated @RequestBody PostRequest request){
+        return postService.editPost(id, request);
+    }
+
     @GetMapping("/search")
-    @PreAuthorize("hasAuthority('user:moderate')")
     @ResponseBody
     public ResponseEntity<ApiPostResponse> getSearch(
             @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
@@ -39,7 +53,7 @@ public class ApiPostController {
 
     @GetMapping("/byTag")
     @ResponseBody
-    private ResponseEntity<ApiPostResponse> getPostsByTag(
+    public ResponseEntity<ApiPostResponse> getPostsByTag(
             @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
             @RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
             @RequestParam(name = "tag", required = false, defaultValue = "") String query){
@@ -48,7 +62,7 @@ public class ApiPostController {
 
     @GetMapping("/byDate")
     @ResponseBody
-    private ResponseEntity<ApiPostResponse> getPostsByDate(
+    public ResponseEntity<ApiPostResponse> getPostsByDate(
             @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
             @RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
             @RequestParam(name = "date", required = false, defaultValue = "") String query){
@@ -56,7 +70,7 @@ public class ApiPostController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<PostResponse> getById(@PathVariable int id){
+    public ResponseEntity<PostResponse> getById(@PathVariable int id){
         return postService.getPostById(id);
     }
 
@@ -68,12 +82,14 @@ public class ApiPostController {
         return postService.getMyPostResponse(offset, limit, status);
     }
 
-//
-//    @GetMapping("/moderation")
-//    private ResponseEntity<ApiPostResponse> getPostsOnModeration(
-//            @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-//            @RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
-//            @RequestParam(name = "status", required = false, defaultValue = "") String status){
-//        return postService.getPostsOnModeration(offset, limit, status);
-//    }
+    @GetMapping("/moderation")
+    @ResponseBody
+    public ResponseEntity<ApiPostResponse> getPostsOnModeration(
+            @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
+            @RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
+            @RequestParam(name = "status", required = false, defaultValue = "new") String status){
+        return postService.getPostsOnModeration(offset, limit, status);
+    }
+
+
 }

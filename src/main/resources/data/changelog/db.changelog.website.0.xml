@@ -53,7 +53,8 @@
             <column name="time" value="2021.06.11"/>
             <column name="title" value="Title1"/>
             <column name="view_count" value="100"/>
-            <column name="user_id" value="1"/>
+            <column name="moderator_id" value="1"/>
+            <column name="user_id" value="2"/>
         </insert>
         <insert tableName="post">
             <column name="id" value="2"/>
@@ -63,7 +64,8 @@
             <column name="time" value="2021.06.11"/>
             <column name="title" value="Title2"/>
             <column name="view_count" value="10"/>
-            <column name="user_id" value="1"/>
+            <column name="moderator_id" value="1"/>
+            <column name="user_id" value="2"/>
         </insert>
         <insert tableName="post">
             <column name="id" value="3"/>
@@ -73,7 +75,8 @@
             <column name="time" value="2020.06.11"/>
             <column name="title" value="Title3"/>
             <column name="view_count" value="1"/>
-            <column name="user_id" value="1"/>
+            <column name="moderator_id" value="1"/>
+            <column name="user_id" value="2"/>
         </insert>
         <insert tableName="post">
             <column name="id" value="4"/>
@@ -83,6 +86,7 @@
             <column name="time" value="2022.06.11"/>
             <column name="title" value="Title4"/>
             <column name="view_count" value="2"/>
+            <column name="moderator_id" value="1"/>
             <column name="user_id" value="1"/>
         </insert>
     </changeSet>

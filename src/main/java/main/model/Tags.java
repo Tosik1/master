@@ -3,6 +3,7 @@ package main.model;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,11 @@ public class Tags {
     private double weight;
 
     @OneToMany(mappedBy = "tag")
-    private List<Tag2Post> tag2Posts;
+    private List<Tag2Post> tag2Posts = new ArrayList<>();
+
+    public void addTag2Post(Tag2Post tag2Post){
+        tag2Posts.add(tag2Post);
+    }
 
     public List<Tag2Post> getTag2Posts() {
         return tag2Posts;

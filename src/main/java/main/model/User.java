@@ -114,4 +114,13 @@ public class User {
         this.photo = photo;
     }
 
+    public boolean checkingPosts(int id){
+        for (Post post : userPosts){
+            if (post.getId() == id){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

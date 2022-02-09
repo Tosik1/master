@@ -1,5 +1,6 @@
 package main.repository;
 
+import liquibase.pro.packaged.Q;
 import main.model.Post;
 import main.model.custom.CountPostPerYear;
 import org.springframework.data.domain.Page;
@@ -56,16 +57,28 @@ public interface PostRepository extends CrudRepository<Post, Integer> {
     @Query(value = "select p.* from post as p where p.id = ?1 and p.mod_status = 1 and p.is_active = 1 and sysdate() - p.time > 0", nativeQuery = true)
     Post findById(int id);
 
-    @Query("FROM Post p where sysdate() - p.time > 0 and is_active = 0 ORDER BY p.time DESC")
-    Page<Post> findMyInactivePosts(Pageable pageable);
+    @Query(value = "select p.* from post as p where p.id = ?1 and p.is_active = 1", nativeQuery = true)
+    Post findByIdForEdit(int id);
+
+    @Query("FROM Post p where sysdate() - p.time > 0 and is_active = 0 and user_id = ?1 ORDER BY p.time DESC")
+    Page<Post> findMyInactivePosts(Pageable pageable, int id);
+
+    @Query("FROM Post p where sysdate() - p.time > 0 and mod_status = 0 and is_active = 1 and user_id = ?1 ORDER BY p.time DESC")
+    Page<Post> findMyPendingPosts(Pageable pageable, int id);
+
+    @Query("FROM Post p where sysdate() - p.time > 0 and mod_status = 2 and is_active = 1 and user_id = ?1 ORDER BY p.time DESC")
+    Page<Post> findMyDeclinedPosts(Pageable pageable, int id);
+
+    @Query("FROM Post p where sysdate() - p.time > 0 and mod_status = 1 and is_active = 1 and user_id = ?1 ORDER BY p.time DESC")
+    Page<Post> findMyPublishedPosts(Pageable pageable, int id);
+
+    @Query(value = "select p.* FROM Post as p where sysdate() - p.time > 0 and p.mod_status = 2 and p.is_active = 1 and p.moderator_id = ?1 ORDER BY p.time DESC", nativeQuery = true)
+    Page<Post> getMyDeclinedPosts(int id, Pageable pageable);
+
+    @Query(value = "select p.* FROM Post as p where sysdate() - p.time > 0 and p.mod_status = 1 and p.is_active = 1 and p.moderator_id = ?1 ORDER BY p.time DESC", nativeQuery = true)
+    Page<Post> getMyAcceptedPosts(int id, Pageable pageable);
 
     @Query("FROM Post p where sysdate() - p.time > 0 and mod_status = 0 and is_active = 1 ORDER BY p.time DESC")
-    Page<Post> findMyPendingPosts(Pageable pageable);
-
-    @Query("FROM Post p where sysdate() - p.time > 0 and mod_status = 2 and is_active = 1 ORDER BY p.time DESC")
-    Page<Post> findMyDeclinedPosts(Pageable pageable);
-
-    @Query("FROM Post p where sysdate() - p.time > 0 and mod_status = 1 and is_active = 1 ORDER BY p.time DESC")
-    Page<Post> findMyPublishedPosts(Pageable pageable);
+    Page<Post> getNewPosts(Pageable pageable);
 
 }

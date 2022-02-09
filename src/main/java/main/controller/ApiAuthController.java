@@ -1,23 +1,20 @@
 package main.controller;
 
-import main.api.response.LoginResponse;
 import main.api.request.LoginRequest;
 import main.api.request.UserRequest;
 import main.api.response.CaptchaResponse;
+import main.api.response.LoginResponse;
 import main.api.response.LogoutResponse;
 import main.api.response.RegisterResponse;
+import main.model.custom.CustomUserForLogin;
 import main.service.CaptchaService;
 import main.service.UserService;
-import main.model.custom.CustomUserForLogin;
-import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.validation.annotation.Validated;
@@ -46,17 +43,17 @@ public class ApiAuthController {
     }
 
     @GetMapping("/captcha")
-    private CaptchaResponse captcha() throws IOException {
+    public CaptchaResponse captcha() throws IOException {
         return captchaService.getApiAuthCaptchaResponse();
     }
 
     @PostMapping("/register")
-    private RegisterResponse register(@Validated @RequestBody UserRequest request) {
+    public RegisterResponse register(@Validated @RequestBody UserRequest request) {
         return userService.createUser(request.getEmail(), request.getPassword(), request.getName(), request.getCaptcha(), request.getCaptchaSecret());
     }
 
     @PostMapping("/login")
-    private ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(auth);
         User user = (User) auth.getPrincipal();

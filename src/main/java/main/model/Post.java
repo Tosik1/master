@@ -3,6 +3,7 @@ package main.model;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class Post {
     private List<PostVotes> postVotes;
 
     @OneToMany(mappedBy = "post")
-    private List<Tag2Post> listTag2Post;
+    private List<Tag2Post> listTag2Post = new ArrayList<>();
 
     public List<PostVotes> getPostVotes() {
         return postVotes;
@@ -64,25 +65,28 @@ public class Post {
         this.listTag2Post = listTag2Post;
     }
 
+    public void addTagOnTag2Post(Tag2Post tag){
+            listTag2Post.add(tag);
+    }
 
-        public User getModerator() {
+    public User getModerator() {
         return moderator;
     }
 
-    public int getLikeCount(){
+    public int getLikeCount() {
         int likeCount = 0;
-        for (PostVotes pv : postVotes){
-            if (pv.getValue() > 0){
+        for (PostVotes pv : postVotes) {
+            if (pv.getValue() > 0) {
                 likeCount++;
             }
         }
         return likeCount;
     }
 
-    public int getDislikeCount(){
+    public int getDislikeCount() {
         int dislikeCount = 0;
-        for (PostVotes pv : postVotes){
-            if (pv.getValue() < 0){
+        for (PostVotes pv : postVotes) {
+            if (pv.getValue() < 0) {
                 dislikeCount++;
             }
         }
@@ -93,7 +97,9 @@ public class Post {
         return user;
     }
 
-    public int getUserId(){ return user.getId();}
+    public int getUserId() {
+        return user.getId();
+    }
 
     public void setUser(User user) {
         this.user = user;
@@ -111,9 +117,18 @@ public class Post {
         return modStatus;
     }
 
-    public void setModStatus(ModeratorStatus modStatus) {
-        this.modStatus = modStatus;
+    public void setModStatusNew() {
+        this.modStatus = ModeratorStatus.NEW;
     }
+
+    public void setModStatusAccepted() {
+        this.modStatus = ModeratorStatus.ACCEPTED;
+    }
+
+    public void setModStatusDeclined() {
+        this.modStatus = ModeratorStatus.DECLINED;
+    }
+
 
     public int getId() {
         return id;
@@ -139,7 +154,7 @@ public class Post {
         this.moderator = moderator;
     }
 
-    public int getCommentCount(){
+    public int getCommentCount() {
         return postComments.size();
     }
 
@@ -151,11 +166,10 @@ public class Post {
         this.time = time;
     }
 
-    public String getAnnounce(){
-        if (text.length() > 150){
+    public String getAnnounce() {
+        if (text.length() > 150) {
             return text.substring(0, 150).concat("...");
-        }
-        else return text;
+        } else return text;
     }
 
     public String getTitle() {
@@ -182,11 +196,12 @@ public class Post {
         this.viewCount = viewCount;
     }
 }
+
 enum ModeratorStatus {
     NEW,
     ACCEPTED,
     DECLINED;
 
-    ModeratorStatus(){
+    ModeratorStatus() {
     }
 }
