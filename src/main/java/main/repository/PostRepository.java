@@ -1,6 +1,7 @@
 package main.repository;
 
 import liquibase.pro.packaged.Q;
+import lombok.var;
 import main.model.Post;
 import main.model.custom.CountPostPerYear;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -81,4 +83,21 @@ public interface PostRepository extends CrudRepository<Post, Integer> {
     @Query("FROM Post p where sysdate() - p.time > 0 and mod_status = 0 and is_active = 1 ORDER BY p.time DESC")
     Page<Post> getNewPosts(Pageable pageable);
 
+    @Query(value = "SELECT COUNT(*) FROM post as p where p.user_id = ?1", nativeQuery = true)
+    int getCountPostForUser(int userId);
+
+    @Query(value = "SELECT COUNT(*) FROM post", nativeQuery = true)
+    int getCountPostForAll();
+
+    @Query(value = "SELECT sum(view_count) FROM post where user_id = ?1", nativeQuery = true)
+    int getCountViewsForUser(int userId);
+
+    @Query(value = "SELECT sum(view_count) FROM post", nativeQuery = true)
+    int getCountViewsForAll();
+
+    @Query(value = "SELECT time FROM post where user_id = ?1 order by time limit 1", nativeQuery = true)
+    Date getFirstPublicationForUser(int userId);
+
+    @Query(value = "SELECT time FROM post order by time limit 1", nativeQuery = true)
+    Date getFirstPublicationForAll();
 }

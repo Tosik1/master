@@ -1,5 +1,8 @@
 package main.service;
 
+import liquibase.pro.packaged.L;
+import liquibase.pro.packaged.P;
+import main.api.request.LikeRequest;
 import main.api.request.PostRequest;
 import main.api.response.*;
 import main.model.*;
@@ -25,6 +28,9 @@ public class PostService {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private PostVotesRepository postVotesRepository;
 
     @Autowired
     private PostCommentsRepository postCommentsRepository;
@@ -287,7 +293,7 @@ public class PostService {
 
 
                 List<Tag2Post> tag2PostList = post.getListTag2Post();
-                for (Tag2Post tag2Post : tag2PostList){
+                for (Tag2Post tag2Post : tag2PostList) {
                     tag2PostRepository.delete(tag2Post);
                     System.out.println();
                 }
@@ -302,7 +308,7 @@ public class PostService {
 
                         listTags.add(newTag);
                     } else {
-                            listTags.add(tagsRepository.findTagByName(tag).get());
+                        listTags.add(tagsRepository.findTagByName(tag).get());
                     }
                 }
 
@@ -344,5 +350,65 @@ public class PostService {
         apiPostResponse.setPosts(singlePage);
         apiPostResponse.setCount(postsPage.getTotalElements());
         return apiPostResponse;
+    }
+
+    public ResponseEntity<LikeResponse> getLikeResponse(int postId) {
+        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userRepository.findUserByEmail(principal.getUsername()).get();
+        LikeResponse likeResponse = new LikeResponse();
+        Post post = postRepository.findById(postId);
+        List<PostVotes> postVotes = postVotesRepository.findByPostId(postId);
+        if (postVotes != null) {
+            for (PostVotes votes : postVotes) {
+                if (votes.getUserId() == currentUser.getId()) {
+                    if (votes.getValue() == 1) {
+                        likeResponse.setResult(false);
+                        return ResponseEntity.ok(likeResponse);
+                    } else {
+                        postVotesRepository.changeValue(1, votes.getId());
+                        likeResponse.setResult(true);
+                        return ResponseEntity.ok(likeResponse);
+                    }
+                }
+            }
+        }
+        PostVotes pv = new PostVotes();
+        pv.setPost(post);
+        pv.setTime(new Date(System.currentTimeMillis()));
+        pv.setUser(currentUser);
+        pv.setValue(1);
+        postVotesRepository.save(pv);
+        likeResponse.setResult(true);
+        return ResponseEntity.ok(likeResponse);
+    }
+
+    public ResponseEntity<LikeResponse> getDislikeResponse(int postId) {
+        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userRepository.findUserByEmail(principal.getUsername()).get();
+        LikeResponse likeResponse = new LikeResponse();
+        Post post = postRepository.findById(postId);
+        List<PostVotes> postVotes = postVotesRepository.findByPostId(postId);
+        if (postVotes != null) {
+            for (PostVotes votes : postVotes) {
+                if (votes.getUserId() == currentUser.getId()) {
+                    if (votes.getValue() == -1) {
+                        likeResponse.setResult(false);
+                        return ResponseEntity.ok(likeResponse);
+                    } else {
+                        postVotesRepository.changeValue(-1, votes.getId());
+                        likeResponse.setResult(true);
+                        return ResponseEntity.ok(likeResponse);
+                    }
+                }
+            }
+        }
+        PostVotes pv = new PostVotes();
+        pv.setPost(post);
+        pv.setTime(new Date(System.currentTimeMillis()));
+        pv.setUser(currentUser);
+        pv.setValue(-1);
+        postVotesRepository.save(pv);
+        likeResponse.setResult(true);
+        return ResponseEntity.ok(likeResponse);
     }
 }

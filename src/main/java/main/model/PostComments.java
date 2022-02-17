@@ -3,6 +3,7 @@ package main.model;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class PostComments {
 
 
     @OneToMany(mappedBy = "parent")
-    private List<PostComments> childComments;
+    private List<PostComments> childComments = new ArrayList<>();
 
     @ManyToOne
     private PostComments parent;

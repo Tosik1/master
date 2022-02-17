@@ -2,12 +2,12 @@ package main.api.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-public class ImageResponse {
+public class EditProfileResponse {
 
-    private boolean result = false;
+    private boolean result = true;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private ImageErrorsResponse errors;
+    private ErrorsProfileResponse errors;
 
     public boolean isResult() {
         return result;
@@ -17,11 +17,11 @@ public class ImageResponse {
         this.result = result;
     }
 
-    public ImageErrorsResponse getErrors() {
+    public ErrorsProfileResponse getErrors() {
         return errors;
     }
 
-    public void setErrors(ImageErrorsResponse errors) {
+    public void setErrors(ErrorsProfileResponse errors) {
         this.errors = errors;
     }
 }

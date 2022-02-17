@@ -1,8 +1,10 @@
 package main.controller;
 
+import main.api.request.LikeRequest;
 import main.api.request.PostRequest;
 import main.api.request.UserRequest;
 import main.api.response.ApiPostResponse;
+import main.api.response.LikeResponse;
 import main.api.response.NewPostResponse;
 import main.api.response.PostResponse;
 import main.service.PostService;
@@ -91,5 +93,16 @@ public class ApiPostController {
         return postService.getPostsOnModeration(offset, limit, status);
     }
 
+    @PostMapping("/like")
+    @ResponseBody
+    public ResponseEntity<LikeResponse> getLike(@Validated @RequestBody LikeRequest request){
+        return postService.getLikeResponse(request.getPostId());
+    }
+
+    @PostMapping("/dislike")
+    @ResponseBody
+    public ResponseEntity<LikeResponse> getDislike(@Validated @RequestBody LikeRequest request){
+        return postService.getDislikeResponse(request.getPostId());
+    }
 
 }

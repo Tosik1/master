@@ -49,6 +49,10 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Tag2Post> listTag2Post = new ArrayList<>();
 
+    public void addComment(PostComments comment){
+        postComments.add(comment);
+    }
+
     public List<PostVotes> getPostVotes() {
         return postVotes;
     }
