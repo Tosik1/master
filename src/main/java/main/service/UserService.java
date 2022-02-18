@@ -99,8 +99,9 @@ public class UserService {
 //            String newName = builder + file.getOriginalFilename().substring(0, contentType.indexOf("/") - 1) + "-resize." + contentType.substring(contentType.indexOf("/") + 1);
 
 //            resizeFile(builder + file.getOriginalFilename(), newName, 36, 36);
-
-                return ResponseEntity.ok(pathImage);
+                System.out.println(pathImage);
+                System.out.println(image.getAbsolutePath());
+                return ResponseEntity.ok(pathImage.replace("src/main/resources/static/edit/", ""));
             } else {
                 errors.setImage("Отправлен файл неподходящего размера. Максимальный размер изображения 36х36");
                 imageResponse.setErrors(errors);
@@ -152,6 +153,7 @@ public class UserService {
             errorsProfileResponse.setPhoto("Фото слишком большое, нужно не более 5 Мб");
         } else {
             currentUser.setPhoto(pathImage);
+            System.out.println(pathImage);
         }
 
         if (password != null) {
@@ -230,7 +232,7 @@ public class UserService {
     @SneakyThrows
     private String getPathToImage(MultipartFile file) {
         StringBuilder builder = new StringBuilder();
-        builder.append("upload");
+        builder.append("src/main/resources/static/edit/upload");
         for (int i = 0; i < 6; i++) {
             if (i % 2 == 0) {
                 builder.append("/");

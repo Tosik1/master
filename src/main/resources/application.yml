@@ -21,3 +21,6 @@ spring:
   liquibase:
     change-log: classpath:/data/changelog/db.changelog.master.xml
     enabled: true
+#  web:
+#    resources:
+#      static-locations: file:/**
