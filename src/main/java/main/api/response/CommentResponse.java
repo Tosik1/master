@@ -1,10 +1,13 @@
 package main.api.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommentResponse {
 
     private int id;
 
-    private boolean result;
+    private Boolean result = true;
 
     private CommentErrorsResponse errors;
 
@@ -16,11 +19,11 @@ public class CommentResponse {
         this.id = id;
     }
 
-    public boolean isResult() {
+    public Boolean isResult() {
         return result;
     }
 
-    public void setResult(boolean result) {
+    public void setResult(Boolean result) {
         this.result = result;
     }
 

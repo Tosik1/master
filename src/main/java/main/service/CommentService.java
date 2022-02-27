@@ -8,6 +8,7 @@ import main.repository.PostCommentsRepository;
 import main.repository.PostRepository;
 import main.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -25,16 +26,16 @@ public class CommentService {
     @Autowired
     private PostCommentsRepository postCommentsRepository;
 
-    public CommentResponse getCommentResponse(int parentId, int postId, String text){
+    public ResponseEntity getCommentResponse(int parentId, int postId, String text){
         CommentResponse commentResponse = new CommentResponse();
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (text.length() < 6) {
+        if (text.length() < 6 || text == null) {
             CommentErrorsResponse errors = new CommentErrorsResponse();
             errors.setText("Текст комментария не задан или слишком короткий");
             commentResponse.setErrors(errors);
             commentResponse.setResult(false);
-            return commentResponse;
+            return ResponseEntity.badRequest().body(commentResponse);
         }else {
             PostComments postComments = new PostComments();
             Post post = postRepository.findById(postId);
@@ -42,12 +43,13 @@ public class CommentService {
             postComments.setText(text);
             postComments.setTime(new Date(System.currentTimeMillis()));
             postComments.setUser(userRepository.findUserByEmail(principal.getUsername()).get());
-            commentResponse.setId(postComments.getId());
             if (!String.valueOf(parentId).equals("")){
                 postComments.setParent(postCommentsRepository.findByParentId(parentId));
             }
             postCommentsRepository.save(postComments);
-            return commentResponse;
+            commentResponse.setResult(null);
+            commentResponse.setId(postComments.getId());
+            return ResponseEntity.ok(commentResponse);
         }
 
     }

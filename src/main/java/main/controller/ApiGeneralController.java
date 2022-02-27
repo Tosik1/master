@@ -2,9 +2,10 @@ package main.controller;
 
 import main.api.request.CommentRequest;
 import main.api.request.EditProfileRequest;
+import main.api.request.ModerationRequest;
+import main.api.request.SettingsRequest;
 import main.api.response.*;
 import main.service.*;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +22,9 @@ public class ApiGeneralController {
     private final CommentService commentService;
     private final StatisticsService statisticsService;
     private final UserService userService;
+    private final PostService postService;
 
-    public ApiGeneralController(SettingsService settingsService, TagService tagService, CalendarService calendarService, InitResponse initResponse, CommentService commentService, StatisticsService statisticsService, UserService userService) {
+    public ApiGeneralController(SettingsService settingsService, TagService tagService, CalendarService calendarService, InitResponse initResponse, CommentService commentService, StatisticsService statisticsService, UserService userService, PostService postService) {
         this.settingsService = settingsService;
         this.tagService = tagService;
         this.calendarService = calendarService;
@@ -30,6 +32,7 @@ public class ApiGeneralController {
         this.commentService = commentService;
         this.statisticsService = statisticsService;
         this.userService = userService;
+        this.postService = postService;
     }
 
     @GetMapping("/settings")
@@ -54,7 +57,7 @@ public class ApiGeneralController {
 
     @PostMapping("/comment")
     @ResponseBody
-    public CommentResponse comment(@Validated @RequestBody CommentRequest commentRequest) {
+    public ResponseEntity comment(@Validated @RequestBody CommentRequest commentRequest) {
         return commentService.getCommentResponse(commentRequest.getParentId(), commentRequest.getPostId(), commentRequest.getText());
     }
 
@@ -66,16 +69,9 @@ public class ApiGeneralController {
 
     @GetMapping("/statistics/all")
     @ResponseBody
-    public StatisticsResponse statisticsAll(){
+    public ResponseEntity statisticsAll(){
         return statisticsService.getAllStatistics();
     }
-
-//    @PostMapping(value = "/profile/my")
-//    @ResponseBody
-//    public EditProfileResponse editProfile(@Validated @RequestBody EditProfileRequest editProfileRequest,
-//                                           @RequestPart(required = false) MultipartFile photo){
-//        return userService.editProfile(editProfileRequest, photo);
-//    }
 
     @PostMapping(value = "/profile/my", consumes = "multipart/form-data")
     public ResponseEntity<EditProfileResponse> editProfile(
@@ -96,6 +92,16 @@ public class ApiGeneralController {
     @PostMapping("/image")
     public ResponseEntity image(@RequestParam("image") MultipartFile file){
         return userService.addImage(file);
+    }
+
+    @PostMapping("/moderation")
+    public ResponseEntity moderation(@RequestBody ModerationRequest request){
+        return postService.moderation(request);
+    }
+
+    @PutMapping("/settings")
+    public void setSettings(@RequestBody SettingsRequest request){
+        settingsService.setGlobalSettings(request);
     }
 
 }

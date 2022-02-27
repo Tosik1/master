@@ -1,8 +1,6 @@
 package main.service;
 
-import liquibase.pro.packaged.L;
-import liquibase.pro.packaged.P;
-import main.api.request.LikeRequest;
+import main.api.request.ModerationRequest;
 import main.api.request.PostRequest;
 import main.api.response.*;
 import main.model.*;
@@ -10,6 +8,7 @@ import main.model.custom.CustomComment;
 import main.model.custom.CustomUser;
 import main.model.custom.CustomUserForPost;
 import main.repository.*;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.HTML;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +43,9 @@ public class PostService {
 
     @Autowired
     private TagsRepository tagsRepository;
+
+    @Autowired
+    private GlobalSettingsRepository globalSettingsRepository;
 
     public ResponseEntity<ApiPostResponse> getApiPostResponse(int offset, int limit, String mode) {
         Pageable first = PageRequest.of(offset / limit, limit);
@@ -120,21 +123,35 @@ public class PostService {
         return ResponseEntity.ok(apiPostResponse);
     }
 
-    public ResponseEntity<PostResponse> getPostById(int id) {
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User checkingUser = userRepository.findUserByEmail(principal.getUsername()).get();
+    public ResponseEntity getPostById(int id) {
+        if (postRepository.findByIdForEdit(id) == null){
+            return ResponseEntity.notFound().build();
+        }
         Post post;
-        if (checkingUser.isModerator() || checkingUser.checkingPosts(id)) {
-            post = postRepository.findByIdForEdit(id);
+        Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!user.equals("anonymousUser")) {
+            org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) user;
+            User checkingUser = userRepository.findUserByEmail(principal.getUsername()).get();
+
+
+            if (checkingUser.isModerator() || checkingUser.checkingPosts(id)) {
+                post = postRepository.findByIdForEdit(id);
+            } else {
+                post = postRepository.findById(id);
+                post.addView();
+            }
         } else {
             post = postRepository.findById(id);
+            post.addView();
         }
+        postRepository.save(post);
+
         List<PostComments> postComments = postCommentsRepository.findByPostId(id);
         List<CustomComment> customComments = new ArrayList<>();
 
         for (PostComments pc : postComments) {
-            User user = userRepository.findById(pc.getUserId()).get();
-            CustomUserForPost customUserForPost = new CustomUserForPost(user.getId(), user.getName(), user.getPhoto());
+            User user1 = userRepository.findById(pc.getUserId()).get();
+            CustomUserForPost customUserForPost = new CustomUserForPost(user1.getId(), user1.getName(), user1.getPhoto());
             customComments.add(new CustomComment(pc.getId(), customUserForPost, pc.getTime(), pc.getText()));
         }
 
@@ -199,15 +216,17 @@ public class PostService {
 
     public ResponseEntity<NewPostResponse> postNewPost(long timestamp, int active, String title, String[] tags, String text) {
 
+        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findUserByEmail(principal.getUsername()).get();
         NewPostResponse newPost = new NewPostResponse();
         PostErrorsResponse postErrors = new PostErrorsResponse();
         int i = 0;
 
-        if (title.length() < 3) {
+        if (title.length() < 3 || title == null) {
             postErrors.setTitle("Название публикации слишком короткое");
             i++;
         }
-        if (text.length() < 50) {
+        if (text.length() < 50 || text == null) {
             postErrors.setText("Для публикации не хватает символов в тексте");
             i++;
         }
@@ -223,6 +242,15 @@ public class PostService {
             post.setTime(new Date(timestamp));
             post.setText(text);
             post.setIsActive(active);
+            post.setTitle(title);
+            if (user.isModerator() || globalSettingsRepository.getPremoderationSetting().equals("NO")){
+                post.setModStatusAccepted();
+            }
+            else {
+                post.setModStatusNew();
+            }
+            post.setViewCount(0);
+            post.setUser(user);
 
             List<Tags> listTags = new ArrayList<>();
 
@@ -238,13 +266,6 @@ public class PostService {
                     listTags.add(tagsRepository.findTagByName(tag).get());
                 }
             }
-
-            post.setTitle(title);
-            post.setModStatusNew();
-            post.setViewCount(0);
-
-            org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            post.setUser(userRepository.findUserByEmail(principal.getUsername()).get());
 
             postRepository.save(post);
 
@@ -263,7 +284,8 @@ public class PostService {
     public ResponseEntity editPost(int id, PostRequest request) {
         Post post = postRepository.findByIdForEdit(id);
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userRepository.findUserByEmail(principal.getUsername()).get().isModerator() || post.getUser().getId() == userRepository.findUserByEmail(principal.getUsername()).get().getId()) {
+        if (userRepository.findUserByEmail(principal.getUsername()).get().isModerator() ||
+                post.getUser().getId() == userRepository.findUserByEmail(principal.getUsername()).get().getId()) {
             NewPostResponse newPost = new NewPostResponse();
             PostErrorsResponse postErrors = new PostErrorsResponse();
             int i = 0;
@@ -286,7 +308,7 @@ public class PostService {
                     timestamp = currentTime;
                 }
                 post.setTime(new Date(timestamp));
-                post.setText(request.getText());
+                post.setText(Jsoup.parse(request.getText()).text());
                 post.setIsActive(request.getActive());
 
                 List<Tags> listTags = new ArrayList<>();
@@ -295,7 +317,6 @@ public class PostService {
                 List<Tag2Post> tag2PostList = post.getListTag2Post();
                 for (Tag2Post tag2Post : tag2PostList) {
                     tag2PostRepository.delete(tag2Post);
-                    System.out.println();
                 }
                 post.setListTag2Post(new ArrayList<>());
 
@@ -316,7 +337,7 @@ public class PostService {
                 if (!userRepository.findUserByEmail(principal.getUsername()).get().isModerator()) {
                     post.setModStatusNew();
                 }
-                post.setViewCount(0);
+//                post.setViewCount(0);
                 post.setUser(userRepository.findUserByEmail(principal.getUsername()).get());
 
                 postRepository.save(post);
@@ -410,5 +431,28 @@ public class PostService {
         postVotesRepository.save(pv);
         likeResponse.setResult(true);
         return ResponseEntity.ok(likeResponse);
+    }
+
+    public ResponseEntity moderation(ModerationRequest request) {
+        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userRepository.findUserByEmail(principal.getUsername()).get();
+        Post post = postRepository.findByIdForEdit(request.getPostId());
+
+        if (request.getDecision().equals("accept")) {
+            post.setModStatusAccepted();
+            post.setModerator(currentUser);
+        } else if (request.getDecision().equals("decline")) {
+            post.setModStatusDeclined();
+            post.setModerator(currentUser);
+        } else {
+            return ResponseEntity.ok(new ModerationResponse(false));
+        }
+        postRepository.save(post);
+
+        return ResponseEntity.ok(new ModerationResponse(true));
+    }
+
+    public int countPostsOnModeration() {
+        return postRepository.getCountPostOnModeration();
     }
 }

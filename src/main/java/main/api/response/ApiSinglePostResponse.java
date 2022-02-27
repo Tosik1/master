@@ -28,7 +28,7 @@ public class ApiSinglePostResponse {
         this.user = user;
         this.title = title;
         if (text.length() > 150){
-            this.text = text.substring(0, 150);
+            this.text = text.substring(0, 150) + "...";
         }else {
             this.text = text;
         }

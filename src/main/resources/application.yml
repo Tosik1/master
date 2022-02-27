@@ -21,6 +21,18 @@ spring:
   liquibase:
     change-log: classpath:/data/changelog/db.changelog.master.xml
     enabled: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: nishumkov
+    password: Qazwsx12344321
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+timeDeleteCaptcha: 3600000
 #  web:
 #    resources:
-#      static-locations: file:/**
+#      static-locations: file:/src/main/resources/

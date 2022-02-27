@@ -26,7 +26,7 @@ public class TagService {
         int countPosts = postRepository.countPosts();
         List<Tags> allTags = tagsRepository.tags();
         Tags mostPopularTag = allTags.get(0);
-        double dWeightMax = mostPopularTag.getTag2Posts().size() / countPosts;
+        double dWeightMax = (double) mostPopularTag.getTag2Posts().size() / countPosts;
         double k = 1 / dWeightMax;
 
         if (query.equals("all")){

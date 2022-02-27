@@ -49,6 +49,10 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Tag2Post> listTag2Post = new ArrayList<>();
 
+    public void addView(){
+        viewCount++;
+    }
+
     public void addComment(PostComments comment){
         postComments.add(comment);
     }
@@ -172,7 +176,7 @@ public class Post {
 
     public String getAnnounce() {
         if (text.length() > 150) {
-            return text.substring(0, 150).concat("...");
+            return text.substring(0, 150) + "...";
         } else return text;
     }
 

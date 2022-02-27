@@ -53,13 +53,13 @@ public interface PostRepository extends CrudRepository<Post, Integer> {
             "where p.id = t2p.post_id and t2p.tag_id = t.id and t.name = ?1 and p.mod_status = 1 and p.is_active = 1 and sysdate() - p.time > 0", nativeQuery = true)
     Page<Post> findByTag(String query, Pageable pageable);
 
-    @Query(value = "select p.* FROM post as p where date(p.time) = ?1", nativeQuery = true)
+    @Query(value = "select p.* FROM post as p where date(p.time) = ?1 and p.mod_status = 1 and p.is_active = 1 and sysdate() - p.time > 0", nativeQuery = true)
     Page<Post> findByDate(String date, Pageable pageable);
 
     @Query(value = "select p.* from post as p where p.id = ?1 and p.mod_status = 1 and p.is_active = 1 and sysdate() - p.time > 0", nativeQuery = true)
     Post findById(int id);
 
-    @Query(value = "select p.* from post as p where p.id = ?1 and p.is_active = 1", nativeQuery = true)
+    @Query(value = "select p.* from post as p where p.id = ?1", nativeQuery = true)
     Post findByIdForEdit(int id);
 
     @Query("FROM Post p where sysdate() - p.time > 0 and is_active = 0 and user_id = ?1 ORDER BY p.time DESC")
@@ -100,4 +100,7 @@ public interface PostRepository extends CrudRepository<Post, Integer> {
 
     @Query(value = "SELECT time FROM post order by time limit 1", nativeQuery = true)
     Date getFirstPublicationForAll();
+
+    @Query(value = "SELECT COUNT(*) FROM post as p where p.mod_status = 0 and p.is_active = 1", nativeQuery = true)
+    int getCountPostOnModeration();
 }

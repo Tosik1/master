@@ -1,6 +1,8 @@
 package main.controller;
 
 import main.api.request.LoginRequest;
+import main.api.request.PasswordRequest;
+import main.api.request.RestoreRequest;
 import main.api.request.UserRequest;
 import main.api.response.CaptchaResponse;
 import main.api.response.LoginResponse;
@@ -8,6 +10,7 @@ import main.api.response.LogoutResponse;
 import main.api.response.RegisterResponse;
 import main.model.custom.CustomUserForLogin;
 import main.service.CaptchaService;
+import main.service.PostService;
 import main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +32,8 @@ import java.security.Principal;
 @RequestMapping("/api/auth")
 public class ApiAuthController {
 
+    private final PostService postService;
+
     private final AuthenticationManager authenticationManager;
 
     private final CaptchaService captchaService;
@@ -36,7 +41,8 @@ public class ApiAuthController {
     private final UserService userService;
 
     @Autowired
-    public ApiAuthController(AuthenticationManager authenticationManager, CaptchaService captchaService, UserService userService) {
+    public ApiAuthController(PostService postService, AuthenticationManager authenticationManager, CaptchaService captchaService, UserService userService) {
+        this.postService = postService;
         this.authenticationManager = authenticationManager;
         this.captchaService = captchaService;
         this.userService = userService;
@@ -48,17 +54,20 @@ public class ApiAuthController {
     }
 
     @PostMapping("/register")
-    public RegisterResponse register(@Validated @RequestBody UserRequest request) {
+    public ResponseEntity register(@Validated @RequestBody UserRequest request) {
         return userService.createUser(request.getEmail(), request.getPassword(), request.getName(), request.getCaptcha(), request.getCaptchaSecret());
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        User user = (User) auth.getPrincipal();
-
-        return ResponseEntity.ok(getLoginResponse(user.getUsername()));
+        try {
+            Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(auth);
+            User user = (User) auth.getPrincipal();
+            return ResponseEntity.ok(userService.getLoginResponse(user.getUsername()));
+        } catch (Exception e){
+            return ResponseEntity.ok(new LoginResponse());
+        }
     }
 
     @GetMapping("/logout")
@@ -74,27 +83,16 @@ public class ApiAuthController {
         if (principal == null){
             return ResponseEntity.ok(new LoginResponse());
         }
-        return ResponseEntity.ok(getLoginResponse(principal.getName()));
+        return ResponseEntity.ok(userService.getLoginResponse(principal.getName()));
     }
 
-    private LoginResponse getLoginResponse(String email){
-        main.model.User currentUser = userService.findByEmail(email);
+    @PostMapping("/restore")
+    public ResponseEntity restore(@RequestBody RestoreRequest request){
+        return userService.sendMailForResponse(request);
+    }
 
-        CustomUserForLogin userResponse = new CustomUserForLogin();
-
-        userResponse.setEmail(currentUser.getEmail());
-        userResponse.setModeration(currentUser.isModerator());
-        userResponse.setId(currentUser.getId());
-        userResponse.setPhoto(currentUser.getPhoto());
-        userResponse.setName(currentUser.getName());
-        if (currentUser.isModerator()) {
-            userResponse.setSettings(true);
-        }
-
-
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setResult(true);
-        loginResponse.setUser(userResponse);
-        return loginResponse;
+    @PostMapping("/password")
+    public ResponseEntity password(@RequestBody PasswordRequest request){
+        return userService.password(request);
     }
 }

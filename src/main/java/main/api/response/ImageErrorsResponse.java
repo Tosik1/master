@@ -2,13 +2,23 @@ package main.api.response;
 
 public class ImageErrorsResponse {
 
-    private String image;
+    private String format;
 
-    public String getImage() {
-        return image;
+    private String size;
+
+    public String getFormat() {
+        return format;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 }

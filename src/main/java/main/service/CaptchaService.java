@@ -5,6 +5,7 @@ import com.github.cage.GCage;
 import main.api.response.CaptchaResponse;
 import main.repository.CaptchaCodesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ public class CaptchaService {
 
     @Autowired
     private CaptchaCodesRepository captchaCodesRepository;
+
+    @Value("${timeDeleteCaptcha}")
+    private int timeDeleteCaptcha;
 
     public CaptchaResponse getApiAuthCaptchaResponse() throws IOException {
         Cage cage = new GCage();
@@ -35,6 +39,6 @@ public class CaptchaService {
 
     @Scheduled(cron = "0 1 * * * ?")
     public void removeOldCaptcha(){
-        captchaCodesRepository.deleteOldCaptcha();
+        captchaCodesRepository.deleteOldCaptcha(timeDeleteCaptcha);
     }
 }
