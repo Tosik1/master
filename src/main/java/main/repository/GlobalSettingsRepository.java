@@ -1,10 +1,12 @@
 package main.repository;
 
 import main.model.GlobalSettings;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -21,7 +23,4 @@ public interface GlobalSettingsRepository extends CrudRepository<GlobalSettings,
 
     @Query(value = "SELECT s.value FROM global_settings as s where s.code = 'POST_PREMODERATION'", nativeQuery = true)
     String getPremoderationSetting();
-
-    @Query(value = "UPDATE global_settings as s SET s.value = '?1' WHERE s.code = '?2'", nativeQuery = true)
-    void setGlobalSetting(String value, String code);
 }

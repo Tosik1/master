@@ -38,8 +38,16 @@ public class SettingsService {
         String premod = request.isPremoderation() ? "YES" : "NO";
         String stat = request.isStatistics() ? "YES" : "NO";
 
-        settingsRepository.setGlobalSetting(multiuser, "MULTIUSER_MODE");
-        settingsRepository.setGlobalSetting(premod, "POST_PREMODERATION");
-        settingsRepository.setGlobalSetting(stat, "STATISTICS_IS_PUBLIC");
+        GlobalSettings globalSettings = settingsRepository.findById(1).get();
+        globalSettings.setValue(multiuser);
+        settingsRepository.save(globalSettings);
+
+        globalSettings = settingsRepository.findById(2).get();
+        globalSettings.setValue(premod);
+        settingsRepository.save(globalSettings);
+
+        globalSettings = settingsRepository.findById(3).get();
+        globalSettings.setValue(stat);
+        settingsRepository.save(globalSettings);
     }
 }
