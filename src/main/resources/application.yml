@@ -7,9 +7,13 @@ blog:
   title: DevPub
 spring:
   datasource:
-    password: Qazwsx12344321
-    url: jdbc:mysql://localhost:3306/website?serverTimezone=UTC#?allowPublicKeyRetrieval=true&amp;shutdown=true&amp;useSSL=false
-    username: root
+    url:
+      jdbc:${CLEARDB_DATABASE_URL:mysql://localhost:3306/blog_engine}?serverTimezone=UTC#?allowPublicKeyRetrieval=true&amp;shutdown=true&amp;useSSL=false
+    server:
+      port: ${PORT:8080}
+  #    password: Qazwsx12344321
+#    username: root
+#    url: jdbc:mysql://localhost:3306/website?serverTimezone=UTC#?allowPublicKeyRetrieval=true&amp;shutdown=true&amp;useSSL=false
   jpa:
     properties:
       hibernate:

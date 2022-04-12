@@ -146,3 +146,5 @@ $RECYCLE.BIN/
 #myremove
 21_DataStructures/*
 *.idea/*
+.src/main/resources/static/upload/*
+/target

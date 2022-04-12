@@ -124,7 +124,7 @@ public class PostService {
     }
 
     public ResponseEntity getPostById(int id) {
-        if (postRepository.findByIdForEdit(id) == null){
+        if (postRepository.findByIdForEdit(id) == null) {
             return ResponseEntity.notFound().build();
         }
         Post post;
@@ -243,31 +243,31 @@ public class PostService {
             post.setText(text);
             post.setIsActive(active);
             post.setTitle(title);
-            if (user.isModerator() || globalSettingsRepository.getPremoderationSetting().equals("NO")){
+            if (user.isModerator() || globalSettingsRepository.getPremoderationSetting().equals("NO")) {
                 post.setModStatusAccepted();
-            }
-            else {
+            } else {
                 post.setModStatusNew();
             }
             post.setViewCount(0);
             post.setUser(user);
 
+            postRepository.save(post);
+
             List<Tags> listTags = new ArrayList<>();
 
-            for (String tag : tags) {
-                if (tagsRepository.findCountTagsByName(tag) == 0) {
-                    Tags newTag = new Tags();
-                    newTag.setName(tag);
-                    newTag.setWeight(1);
-                    tagsRepository.save(newTag);
-
-                    listTags.add(newTag);
-                } else {
-                    listTags.add(tagsRepository.findTagByName(tag).get());
+            if (active == 1) {
+                for (String tag : tags) {
+                    if (tagsRepository.findCountTagsByName(tag) == 0) {
+                        Tags newTag = new Tags();
+                        newTag.setName(tag);
+                        newTag.setWeight(1);
+                        tagsRepository.save(newTag);
+                        listTags.add(newTag);
+                    } else {
+                        listTags.add(tagsRepository.findTagByName(tag).get());
+                    }
                 }
             }
-
-            postRepository.save(post);
 
             for (Tags tag : listTags) {
                 Tag2Post tag2Post = new Tag2Post();
@@ -311,44 +311,41 @@ public class PostService {
                 post.setText(Jsoup.parse(request.getText()).text());
                 post.setIsActive(request.getActive());
 
-                List<Tags> listTags = new ArrayList<>();
-
-
                 List<Tag2Post> tag2PostList = post.getListTag2Post();
                 for (Tag2Post tag2Post : tag2PostList) {
                     tag2PostRepository.delete(tag2Post);
                 }
                 post.setListTag2Post(new ArrayList<>());
-
-                for (String tag : request.getTags()) {
-                    if (tagsRepository.findCountTagsByName(tag) == 0) {
-                        Tags newTag = new Tags();
-                        newTag.setName(tag);
-                        newTag.setWeight(1);
-                        tagsRepository.save(newTag);
-
-                        listTags.add(newTag);
-                    } else {
-                        listTags.add(tagsRepository.findTagByName(tag).get());
-                    }
-                }
-
                 post.setTitle(request.getTitle());
                 if (!userRepository.findUserByEmail(principal.getUsername()).get().isModerator()) {
                     post.setModStatusNew();
                 }
-//                post.setViewCount(0);
                 post.setUser(userRepository.findUserByEmail(principal.getUsername()).get());
-
                 postRepository.save(post);
 
-                for (Tags tag : listTags) {
-                    Tag2Post tag2Post = new Tag2Post();
-                    tag2Post.setPost(post);
-                    tag2Post.setTag(tag);
-                    post.addTagOnTag2Post(tag2Post);
-                    tag.addTag2Post(tag2Post);
-                    tag2PostRepository.save(tag2Post);
+                if (request.getActive() == 1) {
+                    List<Tags> listTags = new ArrayList<>();
+                    for (String tag : request.getTags()) {
+                        if (tagsRepository.findCountTagsByName(tag) == 0) {
+                            Tags newTag = new Tags();
+                            newTag.setName(tag);
+                            newTag.setWeight(1);
+                            tagsRepository.save(newTag);
+
+                            listTags.add(newTag);
+                        } else {
+                            listTags.add(tagsRepository.findTagByName(tag).get());
+                        }
+                    }
+
+                    for (Tags tag : listTags) {
+                        Tag2Post tag2Post = new Tag2Post();
+                        tag2Post.setPost(post);
+                        tag2Post.setTag(tag);
+                        post.addTagOnTag2Post(tag2Post);
+                        tag.addTag2Post(tag2Post);
+                        tag2PostRepository.save(tag2Post);
+                    }
                 }
             }
             return ResponseEntity.ok(newPost);
