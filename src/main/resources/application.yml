@@ -8,14 +8,16 @@ blog:
 spring:
   datasource:
     url:
-#      jdbc:${JAWSDB_URL:mysql://localhost:3306/website}?serverTimezone=UTC#?allowPublicKeyRetrieval=true&amp;shutdown=true&amp;useSSL=false
+      #      jdbc:${JAWSDB_URL:mysql://localhost:3306/website}?serverTimezone=UTC#?allowPublicKeyRetrieval=true&amp;shutdown=true&amp;useSSL=false
       jdbc:${JAWSDB_URL:mysql://localhost:3306/website?serverTimezone=UTC#?allowPublicKeyRetrieval=true&amp;shutdown=true&amp;useSSL=false}
+#    password: dus2pjqc8hcemrnn
+#    username: yvbfq2tjnfjm8f7f
 
     server:
-      port: ${PORT:8080}
+      port: ${PORT:5000}
   #    password: Qazwsx12344321
-#    username: root
-#    url: jdbc:mysql://localhost:3306/website?serverTimezone=UTC#?allowPublicKeyRetrieval=true&amp;shutdown=true&amp;useSSL=false
+  #    username: root
+  #    url: jdbc:mysql://localhost:3306/website?serverTimezone=UTC#?allowPublicKeyRetrieval=true&amp;shutdown=true&amp;useSSL=false
   jpa:
     properties:
       hibernate:
