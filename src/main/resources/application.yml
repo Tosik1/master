@@ -26,7 +26,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: validate
-    show-sql: false
+    show-sql: true
   liquibase:
     change-log: classpath:/data/changelog/db.changelog.master.xml
     enabled: true
