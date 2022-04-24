@@ -26,9 +26,9 @@ public interface PostRepository extends CrudRepository<Post, Integer> {
     @Query("FROM Post p where sysdate() - p.time > 0 and mod_status = 1 and is_active = 1 ORDER BY p.time DESC")
     Page<Post> findMostRecentPosts(Pageable pageable);
 
-    @Query(value = "SELECT *,\n" +
-            "(SELECT SUM(value) FROM website.post_votes where sysdate() - time > 0 and value > 0 and p.id = post_id) as likeCount\n" +
-            "FROM post p where sysdate() - p.time > 0 and mod_status = 1 and is_active = 1 \n" +
+    @Query(value = "SELECT *, " +
+            "(SELECT SUM(value) FROM website.post_votes where sysdate() - time > 0 and value > 0 and p.id = post_id) as likeCount " +
+            "FROM post p where sysdate() - p.time > 0 and mod_status = 1 and is_active = 1 " +
             "ORDER BY likeCount DESC", nativeQuery = true)
     Page<Post> findBestPost(Pageable pageable);
 
