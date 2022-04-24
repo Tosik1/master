@@ -5,6 +5,9 @@ blog:
   phone: +7 903 666-44-55
   subtitle: Рассказы разработчиков
   title: DevPub
+
+server:
+  port: ${PORT:8080}
 spring:
   datasource:
     url:
@@ -13,8 +16,6 @@ spring:
 #    password: dus2pjqc8hcemrnn
 #    username: yvbfq2tjnfjm8f7f
 
-server:
-  port: ${PORT:8080}
   #    password: Qazwsx12344321
   #    username: root
   #    url: jdbc:mysql://localhost:3306/website?serverTimezone=UTC#?allowPublicKeyRetrieval=true&amp;shutdown=true&amp;useSSL=false
